@@ -8,14 +8,14 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.ziamor.heavyrunner.components.cPosition;
 import com.ziamor.heavyrunner.components.cTexture;
 
-public class RenderSystem extends IteratingSystem {
+public class sRender extends IteratingSystem {
     @Wire
     SpriteBatch batch;
 
     ComponentMapper<cPosition> positionComponentMapper;
     ComponentMapper<cTexture> textureComponentMapper;
 
-    public RenderSystem() {
+    public sRender() {
         super(Aspect.all(cPosition.class, cTexture.class));
     }
 
