@@ -33,7 +33,7 @@ public class sDirector extends IntervalSystem {
     float wallSize = 32;
 
     public sDirector() {
-        super(Aspect.all(), 0.5f);
+        super(Aspect.all(), 1);
     }
 
     @Override
@@ -75,7 +75,7 @@ public class sDirector extends IntervalSystem {
         int collisionEnt = world.create();
         cPosition wallPos = positionComponentMapper.create(collisionEnt);
         cSize size = sizeComponentMapper.create(collisionEnt);
-        
+
         velocityComponentMapper.create(collisionEnt);
         wallComponentMapper.create(collisionEnt);
         ignoreGravityComponentMapper.create(collisionEnt);

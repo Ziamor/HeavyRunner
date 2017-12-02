@@ -3,8 +3,10 @@ package com.ziamor.heavyrunner.systems;
 import com.artemis.Aspect;
 import com.artemis.ComponentMapper;
 import com.artemis.systems.IteratingSystem;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
+import com.ziamor.heavyrunner.components.cOnGround;
 import com.ziamor.heavyrunner.components.cPlayerController;
 import com.ziamor.heavyrunner.components.cPosition;
 import com.ziamor.heavyrunner.components.cVelocity;
@@ -18,8 +20,8 @@ public class sPlayerController extends IteratingSystem implements InputProcessor
 
     Action curAction;
 
-    ComponentMapper<cPosition> positionComponentMapper;
     ComponentMapper<cVelocity> velocityComponentMapper;
+    ComponentMapper<cOnGround> onGroundComponentMapper;
 
     boolean doJump;
 
@@ -31,8 +33,8 @@ public class sPlayerController extends IteratingSystem implements InputProcessor
 
     @Override
     protected void process(int entityId) {
-        //cPosition position = positionComponentMapper.get(entityId);
         cVelocity velocity = velocityComponentMapper.get(entityId);
+        cOnGround onGround = onGroundComponentMapper.get(entityId);
 
         switch (curAction) {
             case RIGHT:
@@ -45,17 +47,13 @@ public class sPlayerController extends IteratingSystem implements InputProcessor
                 velocity.x = 0;
                 break;
         }
-        if (canJump(velocity)) {
-            velocity.y += 500;
+        if (doJump) {
+            if (onGround != null)
+                velocity.y += 500;
+            else
+                Gdx.app.log("","Not on ground");
             doJump = false;
         }
-    }
-
-    //TODO fully implement this check
-    protected boolean canJump(cVelocity velocity) {
-        if (doJump && velocity.y == 0)
-            return true;
-        return false;
     }
 
     @Override
@@ -72,7 +70,6 @@ public class sPlayerController extends IteratingSystem implements InputProcessor
                 doJump = true;
                 return true;
         }
-        curAction = Action.NOTHING;
         return false;
     }
 
