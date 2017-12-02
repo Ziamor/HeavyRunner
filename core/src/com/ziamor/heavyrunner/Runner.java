@@ -18,6 +18,7 @@ public class Runner extends Game {
         batch = new SpriteBatch();
         assetManager = new AssetManager();
         assetManager.load("player.png", Texture.class);
+        assetManager.load("wall.png", Texture.class);
         assetManager.finishLoading();
         this.setScreen(new GamePlayScreen(this));
     }

@@ -10,6 +10,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.ziamor.heavyrunner.Runner;
 import com.ziamor.heavyrunner.components.*;
+import com.ziamor.heavyrunner.systems.sGravity;
 import com.ziamor.heavyrunner.systems.sMovement;
 import com.ziamor.heavyrunner.systems.sPlayerController;
 import com.ziamor.heavyrunner.systems.sRender;
@@ -28,6 +29,7 @@ public class GamePlayScreen implements Screen {
     ComponentMapper<cTexture> textureComponentMapper;
     ComponentMapper<cPlayerController> playerControllerComponentMapper;
     ComponentMapper<cVelocity> velocityComponentMapper;
+    ComponentMapper<cIgnoreGravity> ignoreGravityComponentMapper;
 
     public GamePlayScreen(Runner runner) {
         this.runner = runner;
@@ -41,6 +43,7 @@ public class GamePlayScreen implements Screen {
                 .with(
                         new sRender(),
                         new sPlayerController(),
+                        new sGravity(),
                         new sMovement()
                 )
                 .build()
@@ -53,6 +56,7 @@ public class GamePlayScreen implements Screen {
         textureComponentMapper = world.getMapper(cTexture.class);
         playerControllerComponentMapper = world.getMapper(cPlayerController.class);
         velocityComponentMapper = world.getMapper(cVelocity.class);
+        ignoreGravityComponentMapper = world.getMapper(cIgnoreGravity.class);
 
         int player = world.create();
         cPosition playerPos = positionComponentMapper.create(player);
@@ -63,6 +67,17 @@ public class GamePlayScreen implements Screen {
         playerPos.x = 0;
         playerPos.y = 0;
         playerTexture.texture = assetManager.get("player.png", Texture.class);
+
+        int wall = world.create();
+
+        cPosition wallPos = positionComponentMapper.create(wall);
+        cTexture wallTexture = textureComponentMapper.create(wall);
+        velocityComponentMapper.create(wall);
+        ignoreGravityComponentMapper.create(wall);
+        
+        wallPos.x = 250;
+        wallPos.y = 250;
+        wallTexture.texture = assetManager.get("wall.png", Texture.class);
     }
 
     @Override

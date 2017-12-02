@@ -20,6 +20,5 @@ public class sMovement extends IteratingSystem {
         cVelocity velocity = velocityComponentMapper.get(entityId);
 
         position.x += velocity.x * world.getDelta();
-        position.y += velocity.y * world.getDelta();
     }
 }

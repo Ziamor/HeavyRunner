@@ -13,8 +13,6 @@ public class sPlayerController extends IteratingSystem implements InputProcessor
     public enum Action {
         RIGHT,
         LEFT,
-        UP,
-        DOWN,
         NOTHING
     }
 
@@ -23,9 +21,12 @@ public class sPlayerController extends IteratingSystem implements InputProcessor
     ComponentMapper<cPosition> positionComponentMapper;
     ComponentMapper<cVelocity> velocityComponentMapper;
 
+    boolean doJump;
+
     public sPlayerController() {
         super(Aspect.all(cPlayerController.class, cPosition.class, cVelocity.class));
         curAction = Action.NOTHING;
+        doJump = false;
     }
 
     @Override
@@ -44,6 +45,17 @@ public class sPlayerController extends IteratingSystem implements InputProcessor
                 velocity.x = 0;
                 break;
         }
+        if (canJump(velocity)) {
+            velocity.y += 500;
+            doJump = false;
+        }
+    }
+
+    //TODO fully implement this check
+    protected boolean canJump(cVelocity velocity) {
+        if (doJump && velocity.y == 0)
+            return true;
+        return false;
     }
 
     @Override
@@ -54,6 +66,10 @@ public class sPlayerController extends IteratingSystem implements InputProcessor
                 return true;
             case Input.Keys.A:
                 curAction = Action.LEFT;
+                return true;
+            case Input.Keys.W:
+            case Input.Keys.SPACE:
+                doJump = true;
                 return true;
         }
         curAction = Action.NOTHING;
