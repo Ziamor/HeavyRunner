@@ -17,7 +17,7 @@ public class Runner extends Game {
         Gdx.app.setLogLevel(Application.LOG_DEBUG);
         batch = new SpriteBatch();
         assetManager = new AssetManager();
-        assetManager.load("badlogic.jpg", Texture.class);
+        assetManager.load("player.png", Texture.class);
         assetManager.finishLoading();
         this.setScreen(new GamePlayScreen(this));
     }
