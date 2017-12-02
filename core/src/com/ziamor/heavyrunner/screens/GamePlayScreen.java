@@ -44,7 +44,9 @@ public class GamePlayScreen implements Screen {
                         new sPlayerController(),
                         new sGravity(),
                         new sObstacleController(),
-                        new sMovement()
+                        new sMovement(),
+                        new sObstacleCleaner(),
+                        new sObstacleDebug()
                 )
                 .build()
                 .register(batch)
