@@ -8,6 +8,7 @@ import com.ziamor.heavyrunner.components.*;
 public class sObstacleController extends IteratingSystem {
     ComponentMapper<cVelocity> velocityComponentMapper;
 
+    float speed = 250;
     public sObstacleController() {
         super(Aspect.all(cVelocity.class, cObstacle.class));
     }
@@ -15,5 +16,6 @@ public class sObstacleController extends IteratingSystem {
     @Override
     protected void process(int entityId) {
         cVelocity velocity = velocityComponentMapper.get(entityId);
+        velocity.x = -speed;
     }
 }

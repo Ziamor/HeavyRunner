@@ -40,13 +40,16 @@ public class GamePlayScreen implements Screen {
         config = new WorldConfigurationBuilder()
                 .with(
                         new sRender(),
+                        new sDirector(),
                         new sPlayerController(),
                         new sGravity(),
                         new sObstacleController(),
                         new sMovement()
                 )
                 .build()
-                .register(batch);
+                .register(batch)
+                .register(assetManager);
+
         world = new World(config);
 
         inputMultiplexer.addProcessor(world.getSystem(sPlayerController.class));
@@ -67,18 +70,6 @@ public class GamePlayScreen implements Screen {
         playerPos.x = 0;
         playerPos.y = 0;
         playerTexture.texture = assetManager.get("player.png", Texture.class);
-
-        int wall = world.create();
-
-        cPosition wallPos = positionComponentMapper.create(wall);
-        cTexture wallTexture = textureComponentMapper.create(wall);
-        velocityComponentMapper.create(wall);
-        ignoreGravityComponentMapper.create(wall);
-        obstacleComponentMapper.create(wall);
-
-        wallPos.x = 250;
-        wallPos.y = 250;
-        wallTexture.texture = assetManager.get("wall.png", Texture.class);
     }
 
     @Override
