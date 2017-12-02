@@ -1,6 +1,7 @@
 package com.ziamor.heavyrunner.screens;
 
 import com.artemis.*;
+import com.artemis.managers.TagManager;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.Screen;
@@ -8,6 +9,7 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.ziamor.heavyrunner.Runner;
 import com.ziamor.heavyrunner.components.*;
 import com.ziamor.heavyrunner.systems.*;
@@ -15,6 +17,7 @@ import com.ziamor.heavyrunner.systems.*;
 public class GamePlayScreen implements Screen {
     Runner runner;
     SpriteBatch batch;
+    ShapeRenderer shape;
     AssetManager assetManager;
 
     World world;
@@ -28,10 +31,13 @@ public class GamePlayScreen implements Screen {
     ComponentMapper<cVelocity> velocityComponentMapper;
     ComponentMapper<cIgnoreGravity> ignoreGravityComponentMapper;
     ComponentMapper<cObstacle> obstacleComponentMapper;
+    ComponentMapper<cSize> sizeComponentMapper;
+    ComponentMapper<cAABB> aabbComponentMapper;
 
     public GamePlayScreen(Runner runner) {
         this.runner = runner;
         this.batch = runner.batch;
+        this.shape = runner.shape;
         this.assetManager = runner.assetManager;
 
         inputMultiplexer = new InputMultiplexer();
@@ -39,17 +45,26 @@ public class GamePlayScreen implements Screen {
 
         config = new WorldConfigurationBuilder()
                 .with(
+                        new TagManager(),
+                        // Render
                         new sRender(),
                         new sDirector(),
+                        //Input
                         new sPlayerController(),
+                        // Update position
+                        new sAABBUpdate(),
                         new sGravity(),
                         new sObstacleController(),
                         new sMovement(),
-                        new sObstacleCleaner(),
-                        new sObstacleDebug()
+                        new sCollisionDetection(),
+                        // Util
+                        new sDrawAABB(),
+                        new sObstacleCleaner()
+                        // new sObstacleDebug()
                 )
                 .build()
                 .register(batch)
+                .register(shape)
                 .register(assetManager);
 
         world = new World(config);
@@ -62,16 +77,25 @@ public class GamePlayScreen implements Screen {
         velocityComponentMapper = world.getMapper(cVelocity.class);
         ignoreGravityComponentMapper = world.getMapper(cIgnoreGravity.class);
         obstacleComponentMapper = world.getMapper(cObstacle.class);
+        sizeComponentMapper = world.getMapper(cSize.class);
+        aabbComponentMapper = world.getMapper(cAABB.class);
 
         int player = world.create();
+        world.getSystem(TagManager.class).register("player", player);
+
         cPosition playerPos = positionComponentMapper.create(player);
         cTexture playerTexture = textureComponentMapper.create(player);
+        cSize playerSize = sizeComponentMapper.create(player);
+
         velocityComponentMapper.create(player);
         playerControllerComponentMapper.create(player);
+        aabbComponentMapper.create(player);
 
         playerPos.x = 0;
         playerPos.y = 0;
         playerTexture.texture = assetManager.get("player.png", Texture.class);
+        playerSize.width = playerTexture.texture.getWidth();
+        playerSize.height = playerTexture.texture.getHeight();
     }
 
     @Override
