@@ -10,10 +10,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.ziamor.heavyrunner.Runner;
 import com.ziamor.heavyrunner.components.*;
-import com.ziamor.heavyrunner.systems.sGravity;
-import com.ziamor.heavyrunner.systems.sMovement;
-import com.ziamor.heavyrunner.systems.sPlayerController;
-import com.ziamor.heavyrunner.systems.sRender;
+import com.ziamor.heavyrunner.systems.*;
 
 public class GamePlayScreen implements Screen {
     Runner runner;
@@ -30,6 +27,7 @@ public class GamePlayScreen implements Screen {
     ComponentMapper<cPlayerController> playerControllerComponentMapper;
     ComponentMapper<cVelocity> velocityComponentMapper;
     ComponentMapper<cIgnoreGravity> ignoreGravityComponentMapper;
+    ComponentMapper<cObstacle> obstacleComponentMapper;
 
     public GamePlayScreen(Runner runner) {
         this.runner = runner;
@@ -44,6 +42,7 @@ public class GamePlayScreen implements Screen {
                         new sRender(),
                         new sPlayerController(),
                         new sGravity(),
+                        new sObstacleController(),
                         new sMovement()
                 )
                 .build()
@@ -57,6 +56,7 @@ public class GamePlayScreen implements Screen {
         playerControllerComponentMapper = world.getMapper(cPlayerController.class);
         velocityComponentMapper = world.getMapper(cVelocity.class);
         ignoreGravityComponentMapper = world.getMapper(cIgnoreGravity.class);
+        obstacleComponentMapper = world.getMapper(cObstacle.class);
 
         int player = world.create();
         cPosition playerPos = positionComponentMapper.create(player);
@@ -74,7 +74,8 @@ public class GamePlayScreen implements Screen {
         cTexture wallTexture = textureComponentMapper.create(wall);
         velocityComponentMapper.create(wall);
         ignoreGravityComponentMapper.create(wall);
-        
+        obstacleComponentMapper.create(wall);
+
         wallPos.x = 250;
         wallPos.y = 250;
         wallTexture.texture = assetManager.get("wall.png", Texture.class);
