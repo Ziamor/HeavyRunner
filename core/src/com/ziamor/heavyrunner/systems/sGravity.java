@@ -9,7 +9,7 @@ import com.ziamor.heavyrunner.components.cVelocity;
 
 public class sGravity extends IteratingSystem {
 
-    float gravity = 500; // TODO pass this from somewhere
+    float gravity = 800; // TODO pass this from somewhere
 
     ComponentMapper<cPosition> positionComponentMapper;
     ComponentMapper<cVelocity> velocityComponentMapper;
