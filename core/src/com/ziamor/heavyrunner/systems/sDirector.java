@@ -37,9 +37,10 @@ public class sDirector extends IntervalSystem {
     int minPlatformLength = 3;
     int maxPlatformLenth = 7;
     float wallSize = 32;
-
+    float wallDepth = 5;
     boolean rewinding;
-    int frameDeficit= 0;
+    int frameDeficit = 0;
+
     public sDirector() {
         super(Aspect.all(), 1);
     }
@@ -52,9 +53,8 @@ public class sDirector extends IntervalSystem {
         if (startRewind != null) {
             rewinding = true;
             frameDeficit--;
-        }
-        else {
-            if(frameDeficit < 0)
+        } else {
+            if (frameDeficit < 0)
                 frameDeficit++; //TODO correctly fix extra platforms spawning after rewind
             rewinding = false;
         }
@@ -66,7 +66,7 @@ public class sDirector extends IntervalSystem {
 
     @Override
     protected void processSystem() {
-        if(rewinding || frameDeficit < 0)
+        if (rewinding || frameDeficit < 0)
             return;
         float y = MathUtils.random(0, Gdx.graphics.getHeight() - wallSize);
         int num = MathUtils.random(minPlatformLength, maxPlatformLenth);
@@ -89,6 +89,7 @@ public class sDirector extends IntervalSystem {
 
         wallPos.x = x;
         wallPos.y = y;
+        wallPos.z = wallDepth;
         tex.texture = wallTexture;
         size.width = tex.texture.getWidth();
         size.height = tex.texture.getHeight();

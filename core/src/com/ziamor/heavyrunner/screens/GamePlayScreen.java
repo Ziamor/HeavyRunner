@@ -35,6 +35,7 @@ public class GamePlayScreen implements Screen {
     ComponentMapper<cAABB> aabbComponentMapper;
     ComponentMapper<cGroundCollider> groundColliderComponentMapper;
     ComponentMapper<cTimeSave> timeSaveComponentMapper;
+    ComponentMapper<cParallaxBG> parallaxBGComponentMapper;
 
     public GamePlayScreen(Runner runner) {
         this.runner = runner;
@@ -54,6 +55,7 @@ public class GamePlayScreen implements Screen {
                         //Input
                         new sPlayerController(),
                         // Update position
+                        new sParallaxBG(),
                         new sAABBUpdate(),
                         new sGroundColliderUpdate(),
                         new sCollisionDetection(),
@@ -87,6 +89,7 @@ public class GamePlayScreen implements Screen {
         aabbComponentMapper = world.getMapper(cAABB.class);
         groundColliderComponentMapper = world.getMapper(cGroundCollider.class);
         timeSaveComponentMapper = world.getMapper(cTimeSave.class);
+        parallaxBGComponentMapper = world.getMapper(cParallaxBG.class);
 
         int player = world.create();
         world.getSystem(TagManager.class).register("player", player);
@@ -102,11 +105,38 @@ public class GamePlayScreen implements Screen {
         groundColliderComponentMapper.create(player);
         playerPos.x = 0;
         playerPos.y = 0;
+        playerPos.z = 6;
         playerTexture.texture = assetManager.get("player.png", Texture.class);
         playerSize.width = playerTexture.texture.getWidth();
         playerSize.height = playerTexture.texture.getHeight();
 
-        timeSave.init(240,playerPos, playerVel);
+        timeSave.init(240, playerPos, playerVel);
+
+        createParallax(0);
+        createParallax(assetManager.get("clouds1.png", Texture.class).getWidth());
+        createParallax(assetManager.get("clouds1.png", Texture.class).getWidth() * -1f);
+    }
+
+    private void createParallax(float offset) {
+        int clouds1 = world.create();
+        positionComponentMapper.create(clouds1).set(offset, 0, 0);
+        textureComponentMapper.create(clouds1).texture = assetManager.get("clouds1.png", Texture.class);
+        parallaxBGComponentMapper.create(clouds1).scrollFactor = 0.2f;
+
+        int mountains = world.create();
+        positionComponentMapper.create(mountains).set(offset, 0, 1);
+        textureComponentMapper.create(mountains).texture = assetManager.get("mountains.png", Texture.class);
+        parallaxBGComponentMapper.create(mountains).scrollFactor = 0.4f;
+
+        int clouds2 = world.create();
+        positionComponentMapper.create(clouds2).set(offset, 0, 2);
+        textureComponentMapper.create(clouds2).texture = assetManager.get("clouds2.png", Texture.class);
+        parallaxBGComponentMapper.create(clouds2).scrollFactor = 0.6f;
+
+        int grass = world.create();
+        positionComponentMapper.create(grass).set(offset, 0, 3);
+        textureComponentMapper.create(grass).texture = assetManager.get("grass.png", Texture.class);
+        parallaxBGComponentMapper.create(grass).scrollFactor = 0.7f;
     }
 
     @Override

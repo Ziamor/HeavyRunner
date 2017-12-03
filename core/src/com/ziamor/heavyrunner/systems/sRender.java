@@ -8,7 +8,9 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.ziamor.heavyrunner.components.cPosition;
 import com.ziamor.heavyrunner.components.cTexture;
 
-public class sRender extends IteratingSystem {
+import java.util.Comparator;
+
+public class sRender extends SortedIteratingSystem {
     @Wire
     SpriteBatch batch;
 
@@ -24,6 +26,22 @@ public class sRender extends IteratingSystem {
         cPosition pos = positionComponentMapper.get(entityId);
         cTexture tex = textureComponentMapper.get(entityId);
         batch.draw(tex.texture, pos.x, pos.y);
+    }
+
+    @Override
+    public Comparator<Integer> getComparator() {
+        return new Comparator<Integer>() {
+            @Override
+            public int compare(Integer e1, Integer e2) {
+                cPosition e1P = positionComponentMapper.get(e1);
+                cPosition e2P = positionComponentMapper.get(e2);
+                if (e1P == null)
+                    return -1;
+                if (e2P == null)
+                    return 1;
+                return (int) Math.signum(e1P.z - e2P.z);
+            }
+        };
     }
 
     @Override
