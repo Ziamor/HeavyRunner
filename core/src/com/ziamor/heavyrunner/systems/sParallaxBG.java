@@ -15,9 +15,11 @@ public class sParallaxBG extends IteratingSystem {
     ComponentMapper<cParallaxBG> parallaxBGComponentMapper;
     ComponentMapper<cTexture> textureComponentMapper;
     ComponentMapper<cStartRewind> startRewindComponentMapper;
+    ComponentMapper<cDead> deadComponentMapper;
 
     sObstacleController obstacleController;
     float dir = 1f;
+    cDead dead = null;
 
     public sParallaxBG() {
         super(Aspect.all(cPosition.class, cParallaxBG.class, cTexture.class));
@@ -32,10 +34,14 @@ public class sParallaxBG extends IteratingSystem {
             dir = -1f;
         else
             dir = 1f;
+
+        dead = deadComponentMapper.get(player);
     }
 
     @Override
     protected void process(int entityId) {
+        if(dead != null)
+            return;
         cPosition position = positionComponentMapper.get(entityId);
         cParallaxBG parallaxBG = parallaxBGComponentMapper.get(entityId);
         cTexture texture = textureComponentMapper.get(entityId);

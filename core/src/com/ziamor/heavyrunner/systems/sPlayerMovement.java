@@ -11,7 +11,7 @@ public class sPlayerMovement extends IteratingSystem {
     ComponentMapper<cVelocity> velocityComponentMapper;
 
     public sPlayerMovement() {
-        super(Aspect.all(cPosition.class, cVelocity.class).exclude(cStartRewind.class));
+        super(Aspect.all(cPosition.class, cVelocity.class).exclude(cStartRewind.class, cDead.class));
     }
 
     float maxX = 0.15f;

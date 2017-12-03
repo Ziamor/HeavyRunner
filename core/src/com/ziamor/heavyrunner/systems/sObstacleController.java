@@ -12,6 +12,8 @@ public class sObstacleController extends IteratingSystem {
     int player = -1;
     ComponentMapper<cVelocity> velocityComponentMapper;
     ComponentMapper<cStartRewind> startRewindComponentMapper;
+    ComponentMapper<cDead> deadComponentMapper;
+
     float speed = 500;
     float dir = 1f;
 
@@ -25,6 +27,7 @@ public class sObstacleController extends IteratingSystem {
     protected void begin() {
         if (player == -1)
             player = world.getSystem(TagManager.class).getEntityId("player");
+
         cStartRewind startRewind = startRewindComponentMapper.get(player);
         if (startRewind != null)
             dir = -1f;
@@ -34,6 +37,10 @@ public class sObstacleController extends IteratingSystem {
 
     @Override
     protected void process(int entityId) {
+        cDead dead = deadComponentMapper.get(player);
+        if(dead != null)
+            return;
+
         cVelocity velocity = velocityComponentMapper.get(entityId);
         velocity.x = -speed * dir * speedMul;
     }

@@ -12,9 +12,10 @@ public class sGravity extends IteratingSystem {
     ComponentMapper<cPosition> positionComponentMapper;
     ComponentMapper<cVelocity> velocityComponentMapper;
     ComponentMapper<cOnGround> onGroundComponentMapper;
+    ComponentMapper<cDead> deadComponentMapper;
 
     public sGravity() {
-        super(Aspect.all(cPosition.class, cVelocity.class).exclude(cIgnoreGravity.class, cStartRewind.class));
+        super(Aspect.all(cPosition.class, cVelocity.class).exclude(cIgnoreGravity.class, cStartRewind.class, cDead.class));
     }
 
     @Override
@@ -34,7 +35,7 @@ public class sGravity extends IteratingSystem {
         if (position.y <= 0) {
             position.y = 0;
             velocity.y = 0;
-            onGroundComponentMapper.create(entityId);
+            deadComponentMapper.create(entityId);
         }
     }
 }

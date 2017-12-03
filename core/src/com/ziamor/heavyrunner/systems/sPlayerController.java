@@ -27,7 +27,7 @@ public class sPlayerController extends IteratingSystem implements InputProcessor
     boolean doJump;
 
     public sPlayerController() {
-        super(Aspect.all(cPlayerController.class, cPosition.class, cVelocity.class));
+        super(Aspect.all(cPlayerController.class, cPosition.class, cVelocity.class).exclude(cDead.class));
         curAction = Action.NOTHING;
         doJump = false;
     }
