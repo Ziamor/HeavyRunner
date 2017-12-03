@@ -20,6 +20,7 @@ public class sRewindTime extends BaseEntitySystem {
     ComponentMapper<cVelocity> velocityComponentMapper;
 
     ProgressBar timeProgressBar;
+
     public sRewindTime(ProgressBar timeProgressBar) {
         super(Aspect.all());
         this.timeProgressBar = timeProgressBar;
@@ -39,26 +40,32 @@ public class sRewindTime extends BaseEntitySystem {
         cPosition position = positionComponentMapper.get(player);
         cVelocity velocity = velocityComponentMapper.get(player);
 
-        if (startRewind != null && timeSave != null) {
-            startRewind.numFrames -= 1;
-            if (startRewind.numFrames <= 0)
-                startRewindComponentMapper.remove(player);
-            else {
-                TimeSavePoint savePoint = timeSave.rewind();
-                if(savePoint == null){
-                    startRewindComponentMapper.remove(player);
-                    return;
+        if (timeSave != null) {
+            if (startRewind != null) {
+                startRewind.numFrames -= 1;
+                if (startRewind.numFrames <= 0)
+                    stopRewind();
+                else {
+                    TimeSavePoint savePoint = timeSave.rewind();
+                    if (savePoint == null) {
+                        stopRewind();
+                        return;
+                    }
+                    position.x = savePoint.x;
+                    position.y = savePoint.y;
+                    velocity.x = savePoint.vx;
+                    velocity.y = savePoint.vy;
                 }
-                position.x = savePoint.x;
-                position.y = savePoint.y;
-                velocity.x = savePoint.vx;
-                velocity.y = savePoint.vy;
             }
 
-            if(timeProgressBar!= null){
-                timeProgressBar.setRange(0,1);
+            if (timeProgressBar != null) {
+                timeProgressBar.setRange(0, 1);
                 timeProgressBar.setValue(timeSave.getProgress());
             }
         }
+    }
+
+    protected void stopRewind(){
+        startRewindComponentMapper.remove(player);
     }
 }

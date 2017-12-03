@@ -91,7 +91,7 @@ public class GamePlayScreen implements Screen {
                         new sObstacleController(),
                         new sPlayerMovement(),
                         // Time Stuff
-                        new sTimeCreateSavePoints(timeProgressBar),
+                        new sTimeCreateSavePoints(),
                         new sRewindTime(timeProgressBar),
                         // Util
                         new sDrawAABB(),
@@ -172,11 +172,11 @@ public class GamePlayScreen implements Screen {
         parallaxBGComponentMapper.create(grass).scrollFactor = 0.7f;
     }
 
-    protected void createUI(){
+    protected void createUI() {
         uiStage = new Stage();
         inputMultiplexer.addProcessor(uiStage);
 
-        uiTable =  new Table();
+        uiTable = new Table();
         uiTable.setFillParent(true);
         uiTable.top();
         uiTable.left();
@@ -232,7 +232,7 @@ public class GamePlayScreen implements Screen {
         }
 
         if (gameState == GameState.ACTIVE) {
-            if(Gdx.input.isKeyJustPressed(Input.Keys.SLASH))
+            if (Gdx.input.isKeyJustPressed(Input.Keys.SLASH))
                 drawAABB.setEnabled(!drawAABB.isEnabled());
             Gdx.gl.glClearColor(0, 0, 0, 1);
             Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);

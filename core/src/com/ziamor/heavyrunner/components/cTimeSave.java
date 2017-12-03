@@ -27,8 +27,10 @@ public class cTimeSave extends Component {
     }
 
     public TimeSavePoint rewind() {
-        if (count < 0)
+        if (count <= 0){
+            count = 0;
             return null;
+        }
         count--;
         index--;
         if (index < 0)
