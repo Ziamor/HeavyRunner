@@ -1,19 +1,18 @@
 package com.ziamor.heavyrunner.systems;
 
 import com.artemis.Aspect;
+import com.artemis.BaseEntitySystem;
 import com.artemis.ComponentMapper;
 import com.artemis.annotations.EntityId;
 import com.artemis.annotations.Wire;
 import com.artemis.managers.TagManager;
-import com.artemis.systems.IntervalSystem;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.MathUtils;
-import com.sun.deploy.util.Waiter;
 import com.ziamor.heavyrunner.components.*;
 
-public class sDirector extends IntervalSystem {
+public class sDirector extends BaseEntitySystem {
     @EntityId
     int player = -1;
 
@@ -39,10 +38,16 @@ public class sDirector extends IntervalSystem {
     float wallSize = 32;
     float wallDepth = 5;
     boolean rewinding;
-    int frameDeficit = 0;
+
+    float min_x_Gap = wallSize * 2;
+    float max_x_Gap = wallSize * 8;
+
+    float max_y_gap = wallSize * 4;
+    @EntityId
+    int lastPlatform = -1;
 
     public sDirector() {
-        super(Aspect.all(), 1);
+        super(Aspect.all());
     }
 
     @Override
@@ -52,10 +57,8 @@ public class sDirector extends IntervalSystem {
         cStartRewind startRewind = startRewindComponentMapper.get(player);
         if (startRewind != null) {
             rewinding = true;
-            frameDeficit--;
+
         } else {
-            if (frameDeficit < 0)
-                frameDeficit++; //TODO correctly fix extra platforms spawning after rewind
             rewinding = false;
         }
 
@@ -66,13 +69,32 @@ public class sDirector extends IntervalSystem {
 
     @Override
     protected void processSystem() {
-        if (rewinding || frameDeficit < 0)
+        if (rewinding)
             return;
-        float y = MathUtils.random(0, Gdx.graphics.getHeight() - wallSize);
+        cAABB lastWallAABB = null;
+        if (lastPlatform != -1) {
+            lastWallAABB = aabbComponentMapper.get(lastPlatform);
+            if (lastWallAABB != null && lastWallAABB.aabb != null) {
+                float dist = Gdx.graphics.getWidth() - (lastWallAABB.aabb.x + lastWallAABB.aabb.width);
+                if (dist < min_x_Gap)
+                    return;
+                else if (dist < max_x_Gap) {
+                    float r = MathUtils.random();
+                    Gdx.app.log("", "" + r);
+                    if (r < 0.9)
+                        return;
+                }
+            }
+        }
+        float y = 0;
+        if (lastWallAABB == null)
+            y = MathUtils.random(0, Gdx.graphics.getHeight() - wallSize);
+        else
+            y = MathUtils.random(lastWallAABB.aabb.y - max_y_gap, Math.min(lastWallAABB.aabb.y + max_y_gap, Gdx.graphics.getHeight() - wallSize * 4));
         int num = MathUtils.random(minPlatformLength, maxPlatformLenth);
         for (int i = 0; i < num; i++)
             spawnPlatform(xScreenEnd + i * wallSize, y);
-        createCollisionEntity(xScreenEnd, y, num);
+        lastPlatform = createCollisionEntity(xScreenEnd, y, num);
     }
 
     protected void spawnPlatform(float x, float y) {
@@ -95,7 +117,7 @@ public class sDirector extends IntervalSystem {
         size.height = tex.texture.getHeight();
     }
 
-    protected void createCollisionEntity(float x, float y, int platformSize) {
+    protected int createCollisionEntity(float x, float y, int platformSize) {
         int collisionEnt = world.create();
         cPosition wallPos = positionComponentMapper.create(collisionEnt);
         cSize size = sizeComponentMapper.create(collisionEnt);
@@ -111,5 +133,7 @@ public class sDirector extends IntervalSystem {
 
         size.width = platformSize * wallSize;
         size.height = wallSize;
+
+        return collisionEnt;
     }
 }
