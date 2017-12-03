@@ -42,6 +42,7 @@ public class sPlayerController extends IteratingSystem implements InputProcessor
             case REWIND:
                 if (startRewind == null) {
                     startRewindComponentMapper.create(entityId);
+                    onGroundComponentMapper.remove(entityId); // Just to be safe, make sure the player cant spam jump at the end to get higher heights
                 }
                 curAction = Action.NOTHING;
                 break;

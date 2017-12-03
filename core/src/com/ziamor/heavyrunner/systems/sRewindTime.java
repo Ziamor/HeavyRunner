@@ -53,7 +53,6 @@ public class sRewindTime extends BaseEntitySystem {
                 position.y = savePoint.y;
                 velocity.x = savePoint.vx;
                 velocity.y = savePoint.vy;
-                Gdx.app.log("","Rewinding left: " + startRewind.numFrames + " " + savePoint.x + " " + position.x);
             }
 
             if(timeProgressBar!= null){
