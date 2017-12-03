@@ -45,6 +45,8 @@ public class GamePlayScreen implements Screen {
 
     InputMultiplexer inputMultiplexer;
 
+    sDrawAABB drawAABB;
+
     ComponentMapper<cPosition> positionComponentMapper;
     ComponentMapper<cTexture> textureComponentMapper;
     ComponentMapper<cPlayerController> playerControllerComponentMapper;
@@ -102,6 +104,9 @@ public class GamePlayScreen implements Screen {
                 .register(assetManager);
 
         world = new World(config);
+
+        drawAABB = world.getSystem(sDrawAABB.class);
+        drawAABB.setEnabled(false);
 
         inputMultiplexer.addProcessor(world.getSystem(sPlayerController.class));
 
@@ -227,6 +232,8 @@ public class GamePlayScreen implements Screen {
         }
 
         if (gameState == GameState.ACTIVE) {
+            if(Gdx.input.isKeyJustPressed(Input.Keys.SLASH))
+                drawAABB.setEnabled(!drawAABB.isEnabled());
             Gdx.gl.glClearColor(0, 0, 0, 1);
             Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
             world.setDelta(delta);
