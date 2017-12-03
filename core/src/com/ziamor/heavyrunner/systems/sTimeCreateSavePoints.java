@@ -10,6 +10,9 @@ public class sTimeCreateSavePoints extends IteratingSystem {
     ComponentMapper<cPosition> positionComponentMapper;
     ComponentMapper<cVelocity> velocityComponentMapper;
     ComponentMapper<cTimeSave> timeSaveComponentMapper;
+
+    sRewindTime rewindTime;
+
     public sTimeCreateSavePoints() {
         super(Aspect.all(cTimeSave.class, cPosition.class, cVelocity.class).exclude(cStartRewind.class));
     }
@@ -20,6 +23,6 @@ public class sTimeCreateSavePoints extends IteratingSystem {
         cVelocity velocity = velocityComponentMapper.get(entityId);
         cTimeSave timeSave = timeSaveComponentMapper.get(entityId);
 
-        timeSave.addSavePoint(position, velocity);
+        timeSave.addSavePoint(position, velocity, rewindTime.timeSurvived);
     }
 }

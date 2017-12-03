@@ -29,6 +29,6 @@ public class sPlayerMovement extends IteratingSystem {
         velocity.x = velocity.x * (1 - world.getDelta() * 6) + xTarget * (world.getDelta() * 6);
 
         position.x += velocity.x * world.getDelta();
-        
+
     }
 }

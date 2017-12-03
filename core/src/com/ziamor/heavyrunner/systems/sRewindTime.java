@@ -6,9 +6,12 @@ import com.artemis.ComponentMapper;
 import com.artemis.annotations.EntityId;
 import com.artemis.managers.TagManager;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.ProgressBar;
 import com.ziamor.heavyrunner.TimeSavePoint;
 import com.ziamor.heavyrunner.components.*;
+
+import java.text.DecimalFormat;
 
 public class sRewindTime extends BaseEntitySystem {
     @EntityId
@@ -20,17 +23,25 @@ public class sRewindTime extends BaseEntitySystem {
     ComponentMapper<cVelocity> velocityComponentMapper;
 
     ProgressBar timeProgressBar, timeDeSyncProgressBar;
+    Label lblScore;
 
-    float deSyncRate = 1f/2f;
+    float deSyncRate = 1f / 2f;
     float maxDeSync = 2f;
-    public  float curDeSync = 0f;
+    public float curDeSync = 0f;
 
     sObstacleController obstacleController;
 
-    public sRewindTime(ProgressBar timeProgressBar, ProgressBar timeDeSyncProgressBar) {
+    public float timeSurvived = 0;
+    DecimalFormat df;
+
+    public sRewindTime(ProgressBar timeProgressBar, ProgressBar timeDeSyncProgressBar, Label lblScore) {
         super(Aspect.all());
         this.timeProgressBar = timeProgressBar;
         this.timeDeSyncProgressBar = timeDeSyncProgressBar;
+        this.lblScore = lblScore;
+        df = new DecimalFormat();
+        df.setMaximumFractionDigits(2);
+        df.setMinimumFractionDigits(2);
     }
 
     @Override
@@ -62,10 +73,14 @@ public class sRewindTime extends BaseEntitySystem {
                     position.y = savePoint.y;
                     velocity.x = savePoint.vx;
                     velocity.y = savePoint.vy;
-                    curDeSync += deSyncRate * 1f/60f;
+                    timeSurvived = savePoint.timeSurvived;
+                    
+                    curDeSync += deSyncRate * 1f / 60f;
                     if (curDeSync > maxDeSync)
                         curDeSync = maxDeSync;
                 }
+            } else {
+                timeSurvived += world.getDelta();
             }
 
             if (timeProgressBar != null) {
@@ -78,6 +93,9 @@ public class sRewindTime extends BaseEntitySystem {
                 timeDeSyncProgressBar.setValue(curDeSync);
             }
         }
+
+        if (lblScore != null)
+            lblScore.setText("Score: " + df.format(timeSurvived));
     }
 
     protected void stopRewind() {

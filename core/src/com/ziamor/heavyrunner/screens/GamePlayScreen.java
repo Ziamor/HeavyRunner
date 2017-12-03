@@ -37,6 +37,7 @@ public class GamePlayScreen implements Screen {
     Stage uiStage;
     Table uiTable;
     ProgressBar timeProgressBar, timeDeSyncProgressBar;
+    Label lblScore;
 
     Skin skin;
 
@@ -92,7 +93,7 @@ public class GamePlayScreen implements Screen {
                         new sPlayerMovement(),
                         // Time Stuff
                         new sTimeCreateSavePoints(),
-                        new sRewindTime(timeProgressBar, timeDeSyncProgressBar),
+                        new sRewindTime(timeProgressBar, timeDeSyncProgressBar, lblScore),
                         // Util
                         new sDrawAABB(),
                         new sObstacleCleaner()
@@ -185,6 +186,10 @@ public class GamePlayScreen implements Screen {
         timeProgressBar = new ProgressBar(0, 1f, 0.01f, false, skin);
         uiTable.add(new Label("Time Bank:", skin));
         uiTable.add(timeProgressBar);
+
+        lblScore = new Label("Score: 0", skin);
+        uiTable.add().expandX();
+        uiTable.add(lblScore).right();
 
         uiTable.row();
 
