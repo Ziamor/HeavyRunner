@@ -45,6 +45,10 @@ public class sRewindTime extends BaseEntitySystem {
                 startRewindComponentMapper.remove(player);
             else {
                 TimeSavePoint savePoint = timeSave.rewind();
+                if(savePoint == null){
+                    startRewindComponentMapper.remove(player);
+                    return;
+                }
                 position.x = savePoint.x;
                 position.y = savePoint.y;
                 velocity.x = savePoint.vx;

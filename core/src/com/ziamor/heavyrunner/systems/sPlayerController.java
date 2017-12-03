@@ -14,7 +14,8 @@ public class sPlayerController extends IteratingSystem implements InputProcessor
         RIGHT,
         LEFT,
         NOTHING,
-        REWIND
+        REWIND,
+        STOPREWIND
     }
 
     Action curAction;
@@ -26,7 +27,7 @@ public class sPlayerController extends IteratingSystem implements InputProcessor
     boolean doJump;
 
     public sPlayerController() {
-        super(Aspect.all(cPlayerController.class, cPosition.class, cVelocity.class).exclude(cStartRewind.class));
+        super(Aspect.all(cPlayerController.class, cPosition.class, cVelocity.class));
         curAction = Action.NOTHING;
         doJump = false;
     }
@@ -35,18 +36,27 @@ public class sPlayerController extends IteratingSystem implements InputProcessor
     protected void process(int entityId) {
         cVelocity velocity = velocityComponentMapper.get(entityId);
         cOnGround onGround = onGroundComponentMapper.get(entityId);
+        cStartRewind startRewind = startRewindComponentMapper.get(entityId);
 
         switch (curAction) {
             case REWIND:
-                startRewindComponentMapper.create(entityId);
+                if (startRewind == null) {
+                    startRewindComponentMapper.create(entityId);
+                }
                 curAction = Action.NOTHING;
                 break;
             case RIGHT:
-                velocity.x = 500;
+                if (startRewind == null)
+                    velocity.x = 500;
                 break;
             case LEFT:
-                velocity.x = -500;
+                if (startRewind == null)
+                    velocity.x = -500;
                 break;
+            case STOPREWIND:
+                if (startRewind != null)
+                    startRewindComponentMapper.remove(entityId);
+                curAction = Action.NOTHING;
             case NOTHING:
                 velocity.x = 0;
                 break;
@@ -81,6 +91,9 @@ public class sPlayerController extends IteratingSystem implements InputProcessor
     @Override
     public boolean keyUp(int keycode) {
         switch (keycode) {
+            case Input.Keys.Q:
+                curAction = Action.STOPREWIND;
+                break;
             case Input.Keys.D:
                 if (curAction == Action.RIGHT)
                     curAction = Action.NOTHING;
