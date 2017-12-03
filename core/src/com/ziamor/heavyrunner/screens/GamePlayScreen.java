@@ -3,6 +3,7 @@ package com.ziamor.heavyrunner.screens;
 import com.artemis.*;
 import com.artemis.managers.TagManager;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.assets.AssetManager;
@@ -10,15 +11,32 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.ziamor.heavyrunner.Runner;
 import com.ziamor.heavyrunner.components.*;
 import com.ziamor.heavyrunner.systems.*;
 
 public class GamePlayScreen implements Screen {
-    Runner runner;
+    public enum GameState {
+        ACTIVE,
+        PAUSED
+    }
+
+    GameState gameState;
+
+    final Runner runner;
     SpriteBatch batch;
     ShapeRenderer shape;
     AssetManager assetManager;
+
+    Stage stage;
+    Table table;
+    Skin skin;
 
     World world;
     WorldConfiguration config;
@@ -37,7 +55,7 @@ public class GamePlayScreen implements Screen {
     ComponentMapper<cTimeSave> timeSaveComponentMapper;
     ComponentMapper<cParallaxBG> parallaxBGComponentMapper;
 
-    public GamePlayScreen(Runner runner) {
+    public GamePlayScreen(final Runner runner) {
         this.runner = runner;
         this.batch = runner.batch;
         this.shape = runner.shape;
@@ -115,6 +133,40 @@ public class GamePlayScreen implements Screen {
         createParallax(0);
         createParallax(assetManager.get("clouds1.png", Texture.class).getWidth());
         createParallax(assetManager.get("clouds1.png", Texture.class).getWidth() * -1f);
+
+        skin = assetManager.get("skin.json", Skin.class);
+        stage = new Stage();
+        inputMultiplexer.addProcessor(stage);
+
+        table = new Table();
+        table.setFillParent(true);
+        stage.addActor(table);
+
+        final TextButton btnStart = new TextButton("Continue", skin, "default");
+
+        btnStart.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                gameState = GameState.ACTIVE;
+            }
+        });
+
+        table.add(btnStart).width(250).fillX().uniformX();
+        table.row().pad(10, 0, 10, 0);
+
+        final TextButton btnMainMenu= new TextButton("Main Menu", skin, "default");
+
+        btnMainMenu.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                runner.setScreen(new MainMenuScreen(runner));
+                dispose();
+            }
+        });
+
+        table.add(btnMainMenu).width(250).fillX().uniformX();
+
+        gameState = GameState.ACTIVE;
     }
 
     private void createParallax(float offset) {
@@ -146,11 +198,21 @@ public class GamePlayScreen implements Screen {
 
     @Override
     public void render(float delta) {
-        Gdx.gl.glClearColor(0, 0, 0, 1);
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        if (Gdx.input.isKeyPressed(Input.Keys.ESCAPE) && gameState == GameState.ACTIVE) {
+            gameState = GameState.PAUSED;
+        }
 
-        world.setDelta(delta);
-        world.process();
+        if (gameState == GameState.ACTIVE) {
+            Gdx.gl.glClearColor(0, 0, 0, 1);
+            Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+            world.setDelta(delta);
+            world.process();
+        } else if (gameState == GameState.PAUSED) {
+            Gdx.gl.glClearColor(0, 0, 0, 1);
+            Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+            stage.act(delta);
+            stage.draw();
+        }
     }
 
     @Override

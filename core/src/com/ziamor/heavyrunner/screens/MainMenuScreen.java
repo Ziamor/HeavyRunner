@@ -55,7 +55,7 @@ public class MainMenuScreen implements Screen {
             }
         });
 
-        table.add(btnExit).fillX().uniformX();   
+        table.add(btnExit).fillX().uniformX();
     }
 
     @Override
