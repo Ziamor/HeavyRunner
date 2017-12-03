@@ -13,9 +13,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.ziamor.heavyrunner.Runner;
 import com.ziamor.heavyrunner.components.*;
@@ -34,8 +32,12 @@ public class GamePlayScreen implements Screen {
     ShapeRenderer shape;
     AssetManager assetManager;
 
-    Stage stage;
-    Table table;
+    Stage pauseStage;
+    Table pauseTable;
+    Stage uiStage;
+    Table uiTable;
+    ProgressBar timeProgressBar;
+
     Skin skin;
 
     World world;
@@ -64,6 +66,12 @@ public class GamePlayScreen implements Screen {
         inputMultiplexer = new InputMultiplexer();
         Gdx.input.setInputProcessor(inputMultiplexer);
 
+
+        skin = assetManager.get("skin.json", Skin.class);
+
+        createPauseUI();
+        createUI();
+
         config = new WorldConfigurationBuilder()
                 .with(
                         new TagManager(),
@@ -81,8 +89,8 @@ public class GamePlayScreen implements Screen {
                         new sObstacleController(),
                         new sPlayerMovement(),
                         // Time Stuff
-                        new sTimeCreateSavePoints(),
-                        new sRewindTime(),
+                        new sTimeCreateSavePoints(timeProgressBar),
+                        new sRewindTime(timeProgressBar),
                         // Util
                         new sDrawAABB(),
                         new sObstacleCleaner()
@@ -134,38 +142,6 @@ public class GamePlayScreen implements Screen {
         createParallax(assetManager.get("clouds1.png", Texture.class).getWidth());
         createParallax(assetManager.get("clouds1.png", Texture.class).getWidth() * -1f);
 
-        skin = assetManager.get("skin.json", Skin.class);
-        stage = new Stage();
-        inputMultiplexer.addProcessor(stage);
-
-        table = new Table();
-        table.setFillParent(true);
-        stage.addActor(table);
-
-        final TextButton btnStart = new TextButton("Continue", skin, "default");
-
-        btnStart.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                gameState = GameState.ACTIVE;
-            }
-        });
-
-        table.add(btnStart).width(250).fillX().uniformX();
-        table.row().pad(10, 0, 10, 0);
-
-        final TextButton btnMainMenu = new TextButton("Main Menu", skin, "default");
-
-        btnMainMenu.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                runner.setScreen(new MainMenuScreen(runner));
-                dispose();
-            }
-        });
-
-        table.add(btnMainMenu).width(250).fillX().uniformX();
-
         gameState = GameState.ACTIVE;
     }
 
@@ -191,6 +167,54 @@ public class GamePlayScreen implements Screen {
         parallaxBGComponentMapper.create(grass).scrollFactor = 0.7f;
     }
 
+    protected void createUI(){
+        uiStage = new Stage();
+        inputMultiplexer.addProcessor(uiStage);
+
+        uiTable =  new Table();
+        uiTable.setFillParent(true);
+        uiTable.top();
+        uiTable.left();
+        uiStage.addActor(uiTable);
+
+        timeProgressBar = new ProgressBar(0, 0.25f, 0.01f, false, skin);
+        uiTable.add(new Label("Time Bank:", skin));
+        uiTable.add(timeProgressBar);
+    }
+
+    protected void createPauseUI() {
+        pauseStage = new Stage();
+        inputMultiplexer.addProcessor(pauseStage);
+
+        pauseTable = new Table();
+        pauseTable.setFillParent(true);
+        pauseStage.addActor(pauseTable);
+
+        final TextButton btnStart = new TextButton("Continue", skin, "default");
+
+        btnStart.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                gameState = GameState.ACTIVE;
+            }
+        });
+
+        pauseTable.add(btnStart).width(250).fillX().uniformX();
+        pauseTable.row().pad(10, 0, 10, 0);
+
+        final TextButton btnMainMenu = new TextButton("Main Menu", skin, "default");
+
+        btnMainMenu.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                runner.setScreen(new MainMenuScreen(runner));
+                dispose();
+            }
+        });
+
+        pauseTable.add(btnMainMenu).width(250).fillX().uniformX();
+    }
+
     @Override
     public void show() {
 
@@ -207,11 +231,13 @@ public class GamePlayScreen implements Screen {
             Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
             world.setDelta(delta);
             world.process();
+            uiStage.act(delta);
+            uiStage.draw();
         } else if (gameState == GameState.PAUSED) {
             Gdx.gl.glClearColor(0, 0, 0, 1);
             Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-            stage.act(delta);
-            stage.draw();
+            pauseStage.act(delta);
+            pauseStage.draw();
         }
     }
 

@@ -96,7 +96,6 @@ public class sDirector extends BaseEntitySystem {
                     return;
                 else if (dist < max_x_Gap) {
                     float r = MathUtils.random();
-                    Gdx.app.log("", "" + r);
                     if (r < 0.9)
                         return;
                 }

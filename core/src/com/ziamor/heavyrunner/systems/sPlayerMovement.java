@@ -28,6 +28,6 @@ public class sPlayerMovement extends IteratingSystem {
             dir = -1;
 
         float xTarget = dir * maxX;
-        velocity.x = velocity.x * (1 - world.getDelta() * 4) + xTarget * (world.getDelta() * 4);
+        velocity.x = velocity.x * (1 - world.getDelta() * 6) + xTarget * (world.getDelta() * 6);
     }
 }

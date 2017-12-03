@@ -54,8 +54,6 @@ public class sPlayerController extends IteratingSystem implements InputProcessor
         if (doJump) {
             if (onGround != null)
                 velocity.y += 500;
-            else
-                Gdx.app.log("", "Not on ground");
             doJump = false;
         }
     }
