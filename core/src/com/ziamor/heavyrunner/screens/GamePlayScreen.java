@@ -122,7 +122,7 @@ public class GamePlayScreen implements Screen {
         aabbComponentMapper.create(player);
         groundColliderComponentMapper.create(player);
         playerPos.x = 0;
-        playerPos.y = 0;
+        playerPos.y = Gdx.graphics.getHeight() / 2 + 32;
         playerPos.z = 6;
         playerTexture.texture = assetManager.get("player.png", Texture.class);
         playerSize.width = playerTexture.texture.getWidth();
@@ -154,7 +154,7 @@ public class GamePlayScreen implements Screen {
         table.add(btnStart).width(250).fillX().uniformX();
         table.row().pad(10, 0, 10, 0);
 
-        final TextButton btnMainMenu= new TextButton("Main Menu", skin, "default");
+        final TextButton btnMainMenu = new TextButton("Main Menu", skin, "default");
 
         btnMainMenu.addListener(new ClickListener() {
             @Override

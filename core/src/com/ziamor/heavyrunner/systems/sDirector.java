@@ -48,7 +48,10 @@ public class sDirector extends BaseEntitySystem {
 
     public sDirector() {
         super(Aspect.all());
+        doneSetup = false;
     }
+
+    boolean doneSetup;
 
     @Override
     protected void begin() {
@@ -67,8 +70,21 @@ public class sDirector extends BaseEntitySystem {
         xScreenEnd = Gdx.graphics.getWidth();
     }
 
+    public void init() {
+        doneSetup = true;
+        float y = Gdx.graphics.getHeight() / 2;
+        int num = (int) ((Gdx.graphics.getWidth() - min_x_Gap) / wallSize);
+        for (int i = 0; i < num; i++)
+            spawnPlatform(i * wallSize, y);
+        lastPlatform = createCollisionEntity(0, y, num);
+    }
+
     @Override
     protected void processSystem() {
+        if (!doneSetup) {
+            init();
+        }
+
         if (rewinding)
             return;
         cAABB lastWallAABB = null;
@@ -90,7 +106,7 @@ public class sDirector extends BaseEntitySystem {
         if (lastWallAABB == null)
             y = MathUtils.random(0, Gdx.graphics.getHeight() - wallSize);
         else
-            y = MathUtils.random(lastWallAABB.aabb.y - max_y_gap, Math.min(lastWallAABB.aabb.y + max_y_gap, Gdx.graphics.getHeight() - wallSize * 4));
+            y = MathUtils.random(Math.max(0, lastWallAABB.aabb.y - max_y_gap), Math.min(lastWallAABB.aabb.y + max_y_gap, Gdx.graphics.getHeight() - wallSize * 4));
         int num = MathUtils.random(minPlatformLength, maxPlatformLenth);
         for (int i = 0; i < num; i++)
             spawnPlatform(xScreenEnd + i * wallSize, y);
