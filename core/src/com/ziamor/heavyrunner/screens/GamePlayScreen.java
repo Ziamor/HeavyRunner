@@ -27,7 +27,7 @@ public class GamePlayScreen implements Screen {
 
     GameState gameState;
 
-    final Runner runner;
+    public final Runner runner;
     SpriteBatch batch;
     ShapeRenderer shape;
     AssetManager assetManager;
@@ -60,6 +60,9 @@ public class GamePlayScreen implements Screen {
     ComponentMapper<cTimeSave> timeSaveComponentMapper;
     ComponentMapper<cParallaxBG> parallaxBGComponentMapper;
 
+    public boolean gameover = false;
+    public float finalScore = 0;
+
     public GamePlayScreen(final Runner runner) {
         this.runner = runner;
         this.batch = runner.batch;
@@ -78,6 +81,7 @@ public class GamePlayScreen implements Screen {
         config = new WorldConfigurationBuilder()
                 .with(
                         new TagManager(),
+                        new sDead(this),
                         // Render
                         new sRender(),
                         new sDirector(),
@@ -238,24 +242,29 @@ public class GamePlayScreen implements Screen {
 
     @Override
     public void render(float delta) {
-        if (Gdx.input.isKeyPressed(Input.Keys.ESCAPE) && gameState == GameState.ACTIVE) {
-            gameState = GameState.PAUSED;
-        }
+        if (gameover) {
+            runner.setScreen(new GameOverScreen(runner, finalScore));
+            dispose();
+        } else {
+            if (Gdx.input.isKeyPressed(Input.Keys.ESCAPE) && gameState == GameState.ACTIVE) {
+                gameState = GameState.PAUSED;
+            }
 
-        if (gameState == GameState.ACTIVE) {
-            if (Gdx.input.isKeyJustPressed(Input.Keys.SLASH))
-                drawAABB.setEnabled(!drawAABB.isEnabled());
-            Gdx.gl.glClearColor(0, 0, 0, 1);
-            Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-            world.setDelta(delta);
-            world.process();
-            uiStage.act(delta);
-            uiStage.draw();
-        } else if (gameState == GameState.PAUSED) {
-            Gdx.gl.glClearColor(0, 0, 0, 1);
-            Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-            pauseStage.act(delta);
-            pauseStage.draw();
+            if (gameState == GameState.ACTIVE) {
+                if (Gdx.input.isKeyJustPressed(Input.Keys.SLASH))
+                    drawAABB.setEnabled(!drawAABB.isEnabled());
+                Gdx.gl.glClearColor(0, 0, 0, 1);
+                Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+                world.setDelta(delta);
+                world.process();
+                uiStage.act(delta);
+                uiStage.draw();
+            } else if (gameState == GameState.PAUSED) {
+                Gdx.gl.glClearColor(0, 0, 0, 1);
+                Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+                pauseStage.act(delta);
+                pauseStage.draw();
+            }
         }
     }
 
@@ -281,6 +290,5 @@ public class GamePlayScreen implements Screen {
 
     @Override
     public void dispose() {
-
     }
 }

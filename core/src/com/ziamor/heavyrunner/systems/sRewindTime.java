@@ -57,7 +57,7 @@ public class sRewindTime extends BaseEntitySystem {
         cDead dead = deadComponentMapper.get(player);
         if(dead != null)
             return;
-        
+
         cStartRewind startRewind = startRewindComponentMapper.get(player);
         cTimeSave timeSave = timeSaveComponentMapper.get(player);
         cPosition position = positionComponentMapper.get(player);
