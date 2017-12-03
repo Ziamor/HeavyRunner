@@ -15,6 +15,7 @@ public class sCollisionDetection extends BaseEntitySystem {
     ComponentMapper<cVelocity> velocityComponentMapper;
     ComponentMapper<cOnGround> onGroundComponentMapper;
     ComponentMapper<cGroundCollider> groundColliderComponentMapper;
+    ComponentMapper<cStartRewind> startRewindComponentMapper;
 
     public sCollisionDetection() {
         super(Aspect.all());
@@ -24,6 +25,12 @@ public class sCollisionDetection extends BaseEntitySystem {
     protected void processSystem() {
         int player = world.getSystem(TagManager.class).getEntityId("player");
 
+        cStartRewind startRewind = startRewindComponentMapper.get(player);
+
+        if(startRewind != null){
+            // Time is being rewinded, do not check of collisions
+            return;
+        }
         cAABB playerAABB = aabbComponentMapper.get(player);
         cGroundCollider playerGroundCollider = groundColliderComponentMapper.get(player);
         cPosition playerPos = positionComponentMapper.get(player);

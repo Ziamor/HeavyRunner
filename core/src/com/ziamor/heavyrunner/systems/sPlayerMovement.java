@@ -5,14 +5,16 @@ import com.artemis.ComponentMapper;
 import com.artemis.systems.IteratingSystem;
 import com.ziamor.heavyrunner.components.*;
 
-public class sMovement extends IteratingSystem {
+public class sPlayerMovement extends IteratingSystem {
 
     ComponentMapper<cPosition> positionComponentMapper;
     ComponentMapper<cVelocity> velocityComponentMapper;
 
-    public sMovement() {
+    public sPlayerMovement() {
         super(Aspect.all(cPosition.class, cVelocity.class).exclude(cStartRewind.class));
     }
+
+    float maxX = 0.15f;
 
     @Override
     protected void process(int entityId) {
@@ -20,5 +22,12 @@ public class sMovement extends IteratingSystem {
         cVelocity velocity = velocityComponentMapper.get(entityId);
 
         position.x += velocity.x * world.getDelta();
+
+        float dir = 1;
+        if (velocity.x < 0)
+            dir = -1;
+
+        float xTarget = dir * maxX;
+        velocity.x = velocity.x * (1 - world.getDelta() * 4) + xTarget * (world.getDelta() * 4);
     }
 }

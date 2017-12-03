@@ -11,7 +11,7 @@ public class sGroundColliderUpdate extends IteratingSystem {
     ComponentMapper<cGroundCollider> groundColliderComponentMapper;
 
     public sGroundColliderUpdate() {
-        super(Aspect.all(cPosition.class, cGroundCollider.class, cSize.class));
+        super(Aspect.all(cPosition.class, cGroundCollider.class, cSize.class).exclude(cStartRewind.class));
     }
 
     @Override

@@ -79,7 +79,7 @@ public class GamePlayScreen implements Screen {
                         new sCollisionDetection(),
                         new sGravity(),
                         new sObstacleController(),
-                        new sMovement(),
+                        new sPlayerMovement(),
                         // Time Stuff
                         new sTimeCreateSavePoints(),
                         new sRewindTime(),
