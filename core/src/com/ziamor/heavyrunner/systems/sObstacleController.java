@@ -12,8 +12,10 @@ public class sObstacleController extends IteratingSystem {
     int player = -1;
     ComponentMapper<cVelocity> velocityComponentMapper;
     ComponentMapper<cStartRewind> startRewindComponentMapper;
-    float speed = 250;
+    float speed = 500;
     float dir = 1f;
+
+    float speedMul = 1f;
 
     public sObstacleController() {
         super(Aspect.all(cVelocity.class, cObstacle.class));
@@ -33,6 +35,6 @@ public class sObstacleController extends IteratingSystem {
     @Override
     protected void process(int entityId) {
         cVelocity velocity = velocityComponentMapper.get(entityId);
-        velocity.x = -speed * dir;
+        velocity.x = -speed * dir * speedMul;
     }
 }

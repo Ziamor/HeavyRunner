@@ -19,11 +19,18 @@ public class sRewindTime extends BaseEntitySystem {
     ComponentMapper<cPosition> positionComponentMapper;
     ComponentMapper<cVelocity> velocityComponentMapper;
 
-    ProgressBar timeProgressBar;
+    ProgressBar timeProgressBar, timeDeSyncProgressBar;
 
-    public sRewindTime(ProgressBar timeProgressBar) {
+    float deSyncRate = 1f/2f;
+    float maxDeSync = 2f;
+    public  float curDeSync = 0f;
+
+    sObstacleController obstacleController;
+
+    public sRewindTime(ProgressBar timeProgressBar, ProgressBar timeDeSyncProgressBar) {
         super(Aspect.all());
         this.timeProgressBar = timeProgressBar;
+        this.timeDeSyncProgressBar = timeDeSyncProgressBar;
     }
 
     @Override
@@ -55,6 +62,9 @@ public class sRewindTime extends BaseEntitySystem {
                     position.y = savePoint.y;
                     velocity.x = savePoint.vx;
                     velocity.y = savePoint.vy;
+                    curDeSync += deSyncRate * 1f/60f;
+                    if (curDeSync > maxDeSync)
+                        curDeSync = maxDeSync;
                 }
             }
 
@@ -62,10 +72,16 @@ public class sRewindTime extends BaseEntitySystem {
                 timeProgressBar.setRange(0, 1);
                 timeProgressBar.setValue(timeSave.getProgress());
             }
+
+            if (timeDeSyncProgressBar != null) {
+                timeDeSyncProgressBar.setRange(0, maxDeSync);
+                timeDeSyncProgressBar.setValue(curDeSync);
+            }
         }
     }
 
-    protected void stopRewind(){
+    protected void stopRewind() {
         startRewindComponentMapper.remove(player);
+        obstacleController.speedMul = 1f + curDeSync;
     }
 }

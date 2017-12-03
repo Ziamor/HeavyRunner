@@ -21,13 +21,14 @@ public class sPlayerMovement extends IteratingSystem {
         cPosition position = positionComponentMapper.get(entityId);
         cVelocity velocity = velocityComponentMapper.get(entityId);
 
-        position.x += velocity.x * world.getDelta();
-
         float dir = 1;
         if (velocity.x < 0)
             dir = -1;
 
         float xTarget = dir * maxX;
         velocity.x = velocity.x * (1 - world.getDelta() * 6) + xTarget * (world.getDelta() * 6);
+
+        position.x += velocity.x * world.getDelta();
+        
     }
 }

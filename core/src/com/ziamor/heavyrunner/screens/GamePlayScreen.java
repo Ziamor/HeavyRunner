@@ -36,7 +36,7 @@ public class GamePlayScreen implements Screen {
     Table pauseTable;
     Stage uiStage;
     Table uiTable;
-    ProgressBar timeProgressBar;
+    ProgressBar timeProgressBar, timeDeSyncProgressBar;
 
     Skin skin;
 
@@ -92,7 +92,7 @@ public class GamePlayScreen implements Screen {
                         new sPlayerMovement(),
                         // Time Stuff
                         new sTimeCreateSavePoints(),
-                        new sRewindTime(timeProgressBar),
+                        new sRewindTime(timeProgressBar, timeDeSyncProgressBar),
                         // Util
                         new sDrawAABB(),
                         new sObstacleCleaner()
@@ -182,9 +182,15 @@ public class GamePlayScreen implements Screen {
         uiTable.left();
         uiStage.addActor(uiTable);
 
-        timeProgressBar = new ProgressBar(0, 0.25f, 0.01f, false, skin);
+        timeProgressBar = new ProgressBar(0, 1f, 0.01f, false, skin);
         uiTable.add(new Label("Time Bank:", skin));
         uiTable.add(timeProgressBar);
+
+        uiTable.row();
+
+        timeDeSyncProgressBar = new ProgressBar(0, 1f, 0.01f, false, skin);
+        uiTable.add(new Label("Time DeSync:", skin));
+        uiTable.add(timeDeSyncProgressBar);
     }
 
     protected void createPauseUI() {
