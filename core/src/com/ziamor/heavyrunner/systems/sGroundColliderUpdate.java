@@ -20,6 +20,6 @@ public class sGroundColliderUpdate extends IteratingSystem {
         cSize size = sizeComponentMapper.get(entityId);
         cGroundCollider groundCollider = groundColliderComponentMapper.get(entityId);
 
-        groundCollider.aabb.set(position.x, position.y - 1, size.width, 1);
+        groundCollider.aabb.set(position.x + size.width * 0.3f, position.y - 1, size.width * 0.33f, 1);
     }
 }

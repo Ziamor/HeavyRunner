@@ -39,9 +39,10 @@ public class sCollisionDetection extends BaseEntitySystem {
 
                 if (playerGroundCollider.aabb.overlaps(wallAABB.aabb)) {
                     Rectangle intersection = getIntersection(playerGroundCollider.aabb, wallAABB.aabb);
-                    if (playerAABB.aabb.y > wallAABB.aabb.y)
+                    if (playerAABB.aabb.y > wallAABB.aabb.y) {
                         onGroundComponentMapper.create(player);
-                    break;
+                        break;
+                    }
                 }
             }
 
@@ -63,8 +64,9 @@ public class sCollisionDetection extends BaseEntitySystem {
                     } else {
                         if (playerAABB.aabb.y > wallAABB.aabb.y) {
                             playerPos.y += intersection.height;
-                        } else
+                        } else {
                             playerPos.y -= intersection.height;
+                        }
                         playerVel.y = 0;
                         playerAABB.aabb.y = playerPos.y;
                     }

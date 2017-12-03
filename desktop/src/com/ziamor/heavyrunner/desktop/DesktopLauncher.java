@@ -10,6 +10,7 @@ public class DesktopLauncher {
 		config.title = "Heavy Runner";
 		config.width = 800;
 		config.height = 480;
+		config.resizable = false;
 		new LwjglApplication(new Runner(), config);
 	}
 }
