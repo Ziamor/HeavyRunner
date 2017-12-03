@@ -39,6 +39,7 @@ public class sDirector extends IntervalSystem {
     float wallSize = 32;
 
     boolean rewinding;
+    int frameDeficit= 0;
     public sDirector() {
         super(Aspect.all(), 1);
     }
@@ -48,10 +49,15 @@ public class sDirector extends IntervalSystem {
         if (player == -1)
             player = world.getSystem(TagManager.class).getEntityId("player");
         cStartRewind startRewind = startRewindComponentMapper.get(player);
-        if (startRewind != null)
+        if (startRewind != null) {
             rewinding = true;
-        else
+            frameDeficit--;
+        }
+        else {
+            if(frameDeficit < 0)
+                frameDeficit++; //TODO correctly fix extra platforms spawning after rewind
             rewinding = false;
+        }
 
         if (wallTexture == null)
             wallTexture = assetManager.get("wall.png", Texture.class);
@@ -60,7 +66,7 @@ public class sDirector extends IntervalSystem {
 
     @Override
     protected void processSystem() {
-        if(rewinding)
+        if(rewinding || frameDeficit < 0)
             return;
         float y = MathUtils.random(0, Gdx.graphics.getHeight() - wallSize);
         int num = MathUtils.random(minPlatformLength, maxPlatformLenth);
