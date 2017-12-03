@@ -2,7 +2,9 @@ package com.ziamor.heavyrunner.systems;
 
 import com.artemis.Aspect;
 import com.artemis.ComponentMapper;
+import com.artemis.annotations.EntityId;
 import com.artemis.annotations.Wire;
+import com.artemis.managers.TagManager;
 import com.artemis.systems.IntervalSystem;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
@@ -12,6 +14,9 @@ import com.sun.deploy.util.Waiter;
 import com.ziamor.heavyrunner.components.*;
 
 public class sDirector extends IntervalSystem {
+    @EntityId
+    int player = -1;
+
     @Wire
     AssetManager assetManager;
 
@@ -23,6 +28,7 @@ public class sDirector extends IntervalSystem {
     ComponentMapper<cSize> sizeComponentMapper;
     ComponentMapper<cAABB> aabbComponentMapper;
     ComponentMapper<cWall> wallComponentMapper;
+    ComponentMapper<cStartRewind> startRewindComponentMapper;
 
     Texture wallTexture;
 
@@ -32,12 +38,21 @@ public class sDirector extends IntervalSystem {
     int maxPlatformLenth = 7;
     float wallSize = 32;
 
+    boolean rewinding;
     public sDirector() {
         super(Aspect.all(), 1);
     }
 
     @Override
     protected void begin() {
+        if (player == -1)
+            player = world.getSystem(TagManager.class).getEntityId("player");
+        cStartRewind startRewind = startRewindComponentMapper.get(player);
+        if (startRewind != null)
+            rewinding = true;
+        else
+            rewinding = false;
+
         if (wallTexture == null)
             wallTexture = assetManager.get("wall.png", Texture.class);
         xScreenEnd = Gdx.graphics.getWidth();
@@ -45,6 +60,8 @@ public class sDirector extends IntervalSystem {
 
     @Override
     protected void processSystem() {
+        if(rewinding)
+            return;
         float y = MathUtils.random(0, Gdx.graphics.getHeight() - wallSize);
         int num = MathUtils.random(minPlatformLength, maxPlatformLenth);
         for (int i = 0; i < num; i++)

@@ -1,32 +1,32 @@
 package com.ziamor.heavyrunner.systems;
 
 import com.artemis.Aspect;
+import com.artemis.Component;
 import com.artemis.ComponentMapper;
 import com.artemis.systems.IteratingSystem;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
-import com.ziamor.heavyrunner.components.cOnGround;
-import com.ziamor.heavyrunner.components.cPlayerController;
-import com.ziamor.heavyrunner.components.cPosition;
-import com.ziamor.heavyrunner.components.cVelocity;
+import com.ziamor.heavyrunner.components.*;
 
 public class sPlayerController extends IteratingSystem implements InputProcessor {
     public enum Action {
         RIGHT,
         LEFT,
-        NOTHING
+        NOTHING,
+        REWIND
     }
 
     Action curAction;
 
     ComponentMapper<cVelocity> velocityComponentMapper;
     ComponentMapper<cOnGround> onGroundComponentMapper;
+    ComponentMapper<cStartRewind> startRewindComponentMapper;
 
     boolean doJump;
 
     public sPlayerController() {
-        super(Aspect.all(cPlayerController.class, cPosition.class, cVelocity.class));
+        super(Aspect.all(cPlayerController.class, cPosition.class, cVelocity.class).exclude(cStartRewind.class));
         curAction = Action.NOTHING;
         doJump = false;
     }
@@ -37,6 +37,10 @@ public class sPlayerController extends IteratingSystem implements InputProcessor
         cOnGround onGround = onGroundComponentMapper.get(entityId);
 
         switch (curAction) {
+            case REWIND:
+                startRewindComponentMapper.create(entityId);
+                curAction = Action.NOTHING;
+                break;
             case RIGHT:
                 velocity.x = 500;
                 break;
@@ -51,7 +55,7 @@ public class sPlayerController extends IteratingSystem implements InputProcessor
             if (onGround != null)
                 velocity.y += 500;
             else
-                Gdx.app.log("","Not on ground");
+                Gdx.app.log("", "Not on ground");
             doJump = false;
         }
     }
@@ -59,6 +63,9 @@ public class sPlayerController extends IteratingSystem implements InputProcessor
     @Override
     public boolean keyDown(int keycode) {
         switch (keycode) {
+            case Input.Keys.Q:
+                curAction = Action.REWIND;
+                return true;
             case Input.Keys.D:
                 curAction = Action.RIGHT;
                 return true;

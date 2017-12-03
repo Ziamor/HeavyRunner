@@ -3,10 +3,7 @@ package com.ziamor.heavyrunner.systems;
 import com.artemis.Aspect;
 import com.artemis.ComponentMapper;
 import com.artemis.systems.IteratingSystem;
-import com.ziamor.heavyrunner.components.cIgnoreGravity;
-import com.ziamor.heavyrunner.components.cOnGround;
-import com.ziamor.heavyrunner.components.cPosition;
-import com.ziamor.heavyrunner.components.cVelocity;
+import com.ziamor.heavyrunner.components.*;
 
 public class sGravity extends IteratingSystem {
 
@@ -17,7 +14,7 @@ public class sGravity extends IteratingSystem {
     ComponentMapper<cOnGround> onGroundComponentMapper;
 
     public sGravity() {
-        super(Aspect.all(cPosition.class, cVelocity.class).exclude(cIgnoreGravity.class));
+        super(Aspect.all(cPosition.class, cVelocity.class).exclude(cIgnoreGravity.class, cStartRewind.class));
     }
 
     @Override

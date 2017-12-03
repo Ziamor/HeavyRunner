@@ -34,6 +34,7 @@ public class GamePlayScreen implements Screen {
     ComponentMapper<cSize> sizeComponentMapper;
     ComponentMapper<cAABB> aabbComponentMapper;
     ComponentMapper<cGroundCollider> groundColliderComponentMapper;
+    ComponentMapper<cTimeSave> timeSaveComponentMapper;
 
     public GamePlayScreen(Runner runner) {
         this.runner = runner;
@@ -59,6 +60,9 @@ public class GamePlayScreen implements Screen {
                         new sGravity(),
                         new sObstacleController(),
                         new sMovement(),
+                        // Time Stuff
+                        new sTimeCreateSavePoints(),
+                        new sRewindTime(),
                         // Util
                         new sDrawAABB(),
                         new sObstacleCleaner()
@@ -82,6 +86,7 @@ public class GamePlayScreen implements Screen {
         sizeComponentMapper = world.getMapper(cSize.class);
         aabbComponentMapper = world.getMapper(cAABB.class);
         groundColliderComponentMapper = world.getMapper(cGroundCollider.class);
+        timeSaveComponentMapper = world.getMapper(cTimeSave.class);
 
         int player = world.create();
         world.getSystem(TagManager.class).register("player", player);
@@ -89,17 +94,19 @@ public class GamePlayScreen implements Screen {
         cPosition playerPos = positionComponentMapper.create(player);
         cTexture playerTexture = textureComponentMapper.create(player);
         cSize playerSize = sizeComponentMapper.create(player);
+        cTimeSave timeSave = timeSaveComponentMapper.create(player);
+        cVelocity playerVel = velocityComponentMapper.create(player);
 
-        velocityComponentMapper.create(player);
         playerControllerComponentMapper.create(player);
         aabbComponentMapper.create(player);
         groundColliderComponentMapper.create(player);
-
         playerPos.x = 0;
         playerPos.y = 0;
         playerTexture.texture = assetManager.get("player.png", Texture.class);
         playerSize.width = playerTexture.texture.getWidth();
         playerSize.height = playerTexture.texture.getHeight();
+
+        timeSave.init(240,playerPos, playerVel);
     }
 
     @Override

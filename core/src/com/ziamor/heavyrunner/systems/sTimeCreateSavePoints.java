@@ -5,20 +5,21 @@ import com.artemis.ComponentMapper;
 import com.artemis.systems.IteratingSystem;
 import com.ziamor.heavyrunner.components.*;
 
-public class sMovement extends IteratingSystem {
-
+public class sTimeCreateSavePoints extends IteratingSystem {
     ComponentMapper<cPosition> positionComponentMapper;
     ComponentMapper<cVelocity> velocityComponentMapper;
+    ComponentMapper<cTimeSave> timeSaveComponentMapper;
 
-    public sMovement() {
-        super(Aspect.all(cPosition.class, cVelocity.class).exclude(cStartRewind.class));
+    public sTimeCreateSavePoints() {
+        super(Aspect.all(cTimeSave.class, cPosition.class, cVelocity.class).exclude(cStartRewind.class));
     }
 
     @Override
     protected void process(int entityId) {
         cPosition position = positionComponentMapper.get(entityId);
         cVelocity velocity = velocityComponentMapper.get(entityId);
+        cTimeSave timeSave = timeSaveComponentMapper.get(entityId);
 
-        position.x += velocity.x * world.getDelta();
+        timeSave.addSavePoint(position, velocity);
     }
 }
