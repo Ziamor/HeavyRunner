@@ -17,6 +17,7 @@ public class sPlayerAnimationController extends IteratingSystem {
     ComponentMapper<cPlayerAnimation> playerAnimationComponentMapper;
     ComponentMapper<cTextureRegion> textureRegionComponentMapper;
     ComponentMapper<cOnGround> onGroundComponentMapper;
+    ComponentMapper<cStartRewind> startRewindComponentMapper;
 
     boolean loaded;
 
@@ -48,14 +49,23 @@ public class sPlayerAnimationController extends IteratingSystem {
 
     @Override
     protected void process(int entityId) {
-        //cPlayerAnimation playerAnimation = playerAnimationComponentMapper.get(entityId);
+        cPlayerAnimation playerAnimation = playerAnimationComponentMapper.get(entityId);
         cTextureRegion textureRegion = textureRegionComponentMapper.get(entityId);
-        cOnGround onGround = onGroundComponentMapper.get((entityId));
+        cOnGround onGround = onGroundComponentMapper.get(entityId);
+        cStartRewind startRewind = startRewindComponentMapper.get(entityId);
 
         time += world.getDelta();
-        if (onGround != null)
+
+        if (startRewind == null) {
+            if (onGround != null)
+                playerAnimation.state = cPlayerAnimation.AnimState.WALK;
+            else
+                playerAnimation.state = cPlayerAnimation.AnimState.JUMP;
+        }
+        if (playerAnimation.state == cPlayerAnimation.AnimState.WALK)
             textureRegion.textureRegion = walkAnim.getKeyFrame(time, true);
-        else
+        else if (playerAnimation.state == cPlayerAnimation.AnimState.JUMP)
             textureRegion.textureRegion = jumpAnim.getKeyFrame(time, true);
+
     }
 }

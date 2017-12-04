@@ -22,6 +22,7 @@ public class sRewindTime extends BaseEntitySystem {
     ComponentMapper<cPosition> positionComponentMapper;
     ComponentMapper<cVelocity> velocityComponentMapper;
     ComponentMapper<cDead> deadComponentMapper;
+    ComponentMapper<cPlayerAnimation> playerAnimationComponentMapper;
 
     ProgressBar timeProgressBar, timeDeSyncProgressBar;
     Label lblScore;
@@ -55,13 +56,14 @@ public class sRewindTime extends BaseEntitySystem {
             return;
 
         cDead dead = deadComponentMapper.get(player);
-        if(dead != null)
+        if (dead != null)
             return;
 
         cStartRewind startRewind = startRewindComponentMapper.get(player);
         cTimeSave timeSave = timeSaveComponentMapper.get(player);
         cPosition position = positionComponentMapper.get(player);
         cVelocity velocity = velocityComponentMapper.get(player);
+        cPlayerAnimation playerAnimation = playerAnimationComponentMapper.get(player);
 
         if (timeSave != null) {
             if (startRewind != null) {
@@ -78,6 +80,7 @@ public class sRewindTime extends BaseEntitySystem {
                     position.y = savePoint.y;
                     velocity.x = savePoint.vx;
                     velocity.y = savePoint.vy;
+                    playerAnimation.state = savePoint.animState;
                     timeSurvived = savePoint.timeSurvived;
 
                     curDeSync += deSyncRate * 1f / 60f;

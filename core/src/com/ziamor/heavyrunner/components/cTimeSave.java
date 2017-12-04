@@ -14,12 +14,12 @@ public class cTimeSave extends Component {
         savepoints = new TimeSavePoint[size];
         for (int i = 0; i < savepoints.length; i++) {
             savepoints[i] = new TimeSavePoint();
-            savepoints[i].set(pos.x, pos.y, vel.x, vel.y, 0);
+            savepoints[i].set(pos.x, pos.y, vel.x, vel.y, 0, cPlayerAnimation.AnimState.WALK);
         }
     }
 
-    public void addSavePoint(cPosition pos, cVelocity vel, float timeSurvived) {
-        savepoints[index++].set(pos.x, pos.y, vel.x, vel.y, timeSurvived);
+    public void addSavePoint(cPosition pos, cVelocity vel, float timeSurvived, cPlayerAnimation.AnimState animState) {
+        savepoints[index++].set(pos.x, pos.y, vel.x, vel.y, timeSurvived, animState);
         count++;
         if (count > savepoints.length)
             count = savepoints.length;
