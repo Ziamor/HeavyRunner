@@ -41,6 +41,7 @@ public class GamePlayScreen implements Screen {
     Label lblScore;
 
     Skin skin;
+    Skin btnSkin;
 
     World world;
     WorldConfiguration config;
@@ -81,7 +82,7 @@ public class GamePlayScreen implements Screen {
 
 
         skin = assetManager.get("skin.json", Skin.class);
-
+        btnSkin = assetManager.get("trSkin.json", Skin.class);
         createPauseUI();
         createUI();
 
@@ -217,7 +218,7 @@ public class GamePlayScreen implements Screen {
         pauseTable.setFillParent(true);
         pauseStage.addActor(pauseTable);
 
-        final TextButton btnStart = new TextButton("Continue", skin, "default");
+        final TextButton btnStart = new TextButton("Continue", btnSkin, "default");
 
         btnStart.addListener(new ClickListener() {
             @Override
@@ -230,7 +231,7 @@ public class GamePlayScreen implements Screen {
         pauseTable.add(btnStart).width(250).fillX().uniformX();
         pauseTable.row().pad(10, 0, 10, 0);
 
-        final TextButton btnMainMenu = new TextButton("Main Menu", skin, "default");
+        final TextButton btnMainMenu = new TextButton("Main Menu", btnSkin, "default");
 
         btnMainMenu.addListener(new ClickListener() {
             @Override
@@ -283,7 +284,7 @@ public class GamePlayScreen implements Screen {
                 uiStage.act(delta);
                 uiStage.draw();
             } else if (gameState == GameState.PAUSED) {
-                Gdx.gl.glClearColor(0, 0, 0, 1);
+                Gdx.gl.glClearColor(48f/255f, 36f/255f, 66f/255f, 1);
                 Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
                 pauseStage.act(delta);
                 pauseStage.draw();
