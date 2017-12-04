@@ -51,6 +51,7 @@ public class GameOverScreen implements Screen {
         btnStart.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
+                runner.selectSound.play(0.75f);
                 runner.setScreen(new GamePlayScreen(runner));
                 dispose();
             }
@@ -63,6 +64,7 @@ public class GameOverScreen implements Screen {
         btnExit.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
+                runner.selectSound.play(0.75f);
                 Gdx.app.exit();
                 dispose();
             }

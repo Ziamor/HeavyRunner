@@ -222,6 +222,7 @@ public class GamePlayScreen implements Screen {
         btnStart.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
+                runner.selectSound.play(0.75f);
                 gameState = GameState.ACTIVE;
             }
         });
@@ -234,6 +235,7 @@ public class GamePlayScreen implements Screen {
         btnMainMenu.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
+                runner.selectSound.play(0.75f);
                 runner.setScreen(new MainMenuScreen(runner));
                 dispose();
             }

@@ -38,6 +38,7 @@ public class MainMenuScreen implements Screen {
         btnStart.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
+                runner.selectSound.play(0.75f);
                 runner.setScreen(new GamePlayScreen(runner));
                 dispose();
             }
@@ -50,6 +51,7 @@ public class MainMenuScreen implements Screen {
         btnExit.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
+                runner.selectSound.play(0.25f);
                 Gdx.app.exit();
                 dispose();
             }
