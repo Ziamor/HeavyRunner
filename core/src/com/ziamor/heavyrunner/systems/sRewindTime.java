@@ -33,8 +33,6 @@ public class sRewindTime extends BaseEntitySystem {
     float maxDeSync = 2f;
     public float curDeSync = 0f;
 
-    sObstacleController obstacleController;
-
     public float timeSurvived = 0;
     DecimalFormat df;
 
@@ -113,7 +111,6 @@ public class sRewindTime extends BaseEntitySystem {
 
     protected void stopRewind() {
         startRewindComponentMapper.remove(player);
-        obstacleController.speedMul = 1f + curDeSync;
         staticShaderComponentMapper.remove(player);
     }
 }

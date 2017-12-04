@@ -5,6 +5,7 @@ import com.artemis.ComponentMapper;
 import com.artemis.annotations.EntityId;
 import com.artemis.managers.TagManager;
 import com.artemis.systems.IteratingSystem;
+import com.badlogic.gdx.Gdx;
 import com.ziamor.heavyrunner.components.*;
 
 public class sObstacleController extends IteratingSystem {
@@ -21,6 +22,8 @@ public class sObstacleController extends IteratingSystem {
 
     float speedMul = 1f;
 
+    sRewindTime rewindTime;
+
     public sObstacleController() {
         super(Aspect.all(cVelocity.class, cObstacle.class));
     }
@@ -35,6 +38,8 @@ public class sObstacleController extends IteratingSystem {
             dir = -1f;
         else
             dir = 1f;
+        speedMul = rewindTime.curDeSync + 1.0f;
+        Gdx.app.debug("", "Speed: " + speed * speedMul + "Mul: " + speedMul);
     }
 
     @Override
