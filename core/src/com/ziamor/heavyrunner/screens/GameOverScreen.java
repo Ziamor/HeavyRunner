@@ -3,6 +3,7 @@ package com.ziamor.heavyrunner.screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -40,6 +41,12 @@ public class GameOverScreen implements Screen {
         DecimalFormat df = new DecimalFormat();
         df.setMaximumFractionDigits(2);
         df.setMinimumFractionDigits(2);
+
+        final Label lblTip = new Label("Remember that you can press Q to rewind time. Keep in mind though that \nit will increase your deSync causing the world to move much faster.", skin);
+        lblTip.setWidth(100);
+        lblTip.setAlignment(Align.center);
+        table.add(lblTip).fillX().uniformX();
+        table.row().pad(50, 0, 50, 0);
 
         final Label lblScore = new Label("Time Survived: " + df.format(score) + "s", skin);
         lblScore.setAlignment(Align.center);
