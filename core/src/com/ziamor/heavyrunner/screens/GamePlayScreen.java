@@ -64,6 +64,8 @@ public class GamePlayScreen implements Screen {
     public boolean gameover = false;
     public float finalScore = 0;
 
+    public boolean rev = false;
+
     public GamePlayScreen(final Runner runner) {
         this.runner = runner;
         this.batch = runner.batch;
@@ -235,6 +237,21 @@ public class GamePlayScreen implements Screen {
 
     @Override
     public void render(float delta) {
+        Gdx.app.debug("", "" + this.runner.bgMusic.getPosition());
+        if (rev) {
+            if (!Gdx.input.isKeyPressed(Input.Keys.Q)){
+                rev = false;
+                this.runner.bgMusicRev.pause();
+                this.runner.bgMusic.setPosition(this.runner.bgMusicRev.getPosition());
+                this.runner.bgMusic.play();
+            }
+        } else if (Gdx.input.isKeyPressed(Input.Keys.Q)) {
+            rev = true;
+            this.runner.bgMusic.pause();
+            this.runner.bgMusicRev.setPosition(this.runner.bgMusic.getPosition());
+            this.runner.bgMusicRev.play();
+        }
+
         if (gameover) {
             runner.setScreen(new GameOverScreen(runner, finalScore));
             dispose();

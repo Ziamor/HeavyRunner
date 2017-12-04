@@ -4,6 +4,7 @@ import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
@@ -15,6 +16,8 @@ public class Runner extends Game {
     public SpriteBatch batch;
     public ShapeRenderer shape;
     public AssetManager assetManager;
+
+    public Music bgMusic,bgMusicRev;
 
     @Override
     public void create() {
@@ -39,8 +42,21 @@ public class Runner extends Game {
         //assetManager.load("mountains.png", Texture.class);
         assetManager.load("farTrees_BG.png", Texture.class);
         assetManager.load("closeTrees_BG.png", Texture.class);
+        assetManager.load("Ludum_Music.mp3", Music.class);
+        assetManager.load("Ludum_MusicReverse.mp3", Music.class);
 
         assetManager.finishLoading();
+
+        bgMusic = assetManager.get("Ludum_Music.mp3", Music.class);
+        bgMusicRev= assetManager.get("Ludum_MusicReverse.mp3", Music.class);
+
+        bgMusicRev.setVolume(0.25f);
+        bgMusicRev.setLooping(true);
+
+        bgMusic.play();
+        bgMusic.setVolume(0.25f);
+        bgMusic.setLooping(true);
+
         this.setScreen(new MainMenuScreen(this));
     }
 

@@ -25,7 +25,6 @@ public class sPlayerMovement extends IteratingSystem {
         float xTarget = acceleration.x;
 
         velocity.x = velocity.x * (1 - world.getDelta() * 6) + xTarget * (world.getDelta() * 6);
-        Gdx.app.log("", velocity.x + "");
         position.x += velocity.x * world.getDelta();
     }
 }
