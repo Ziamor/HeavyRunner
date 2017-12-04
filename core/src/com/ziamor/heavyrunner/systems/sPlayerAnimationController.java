@@ -45,6 +45,7 @@ public class sPlayerAnimationController extends IteratingSystem {
         if (!loaded) {
             init();
         }
+        time += world.getDelta();
     }
 
     @Override
@@ -53,8 +54,6 @@ public class sPlayerAnimationController extends IteratingSystem {
         cTextureRegion textureRegion = textureRegionComponentMapper.get(entityId);
         cOnGround onGround = onGroundComponentMapper.get(entityId);
         cStartRewind startRewind = startRewindComponentMapper.get(entityId);
-
-        time += world.getDelta();
 
         if (startRewind == null) {
             if (onGround != null)
