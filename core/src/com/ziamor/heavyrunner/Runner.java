@@ -19,7 +19,7 @@ public class Runner extends Game {
 
     public Music bgMusic, bgMusicRev;
 
-    public boolean enableMusic = true;
+    public boolean enableMusic = false;
 
     @Override
     public void create() {
@@ -30,6 +30,7 @@ public class Runner extends Game {
         assetManager.load("skin.json", Skin.class);
         assetManager.load("trSkin.json", Skin.class);
         assetManager.load("player.png", Texture.class);
+        assetManager.load("jump_BlueBoy.png", Texture.class);
         assetManager.load("pl1.png", Texture.class);
         assetManager.load("pr1.png", Texture.class);
         assetManager.load("pl2.png", Texture.class);

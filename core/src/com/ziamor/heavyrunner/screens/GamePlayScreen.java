@@ -10,6 +10,7 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -60,6 +61,8 @@ public class GamePlayScreen implements Screen {
     ComponentMapper<cTimeSave> timeSaveComponentMapper;
     ComponentMapper<cParallaxBG> parallaxBGComponentMapper;
     ComponentMapper<cAcceleration> accelerationComponentMapper;
+    ComponentMapper<cTextureRegion> textureRegionComponentMapper;
+    ComponentMapper<cPlayerAnimation> playerAnimationComponentMapper;
 
     public boolean gameover = false;
     public float finalScore = 0;
@@ -86,6 +89,7 @@ public class GamePlayScreen implements Screen {
                         new TagManager(),
                         new sDead(this),
                         // Render
+                        new sPlayerAnimationController(),
                         new sRender(),
                         new sDirector(),
                         //Input
@@ -130,12 +134,14 @@ public class GamePlayScreen implements Screen {
         timeSaveComponentMapper = world.getMapper(cTimeSave.class);
         parallaxBGComponentMapper = world.getMapper(cParallaxBG.class);
         accelerationComponentMapper = world.getMapper(cAcceleration.class);
+        textureRegionComponentMapper = world.getMapper(cTextureRegion.class);
+        playerAnimationComponentMapper = world.getMapper(cPlayerAnimation.class);
 
         int player = world.create();
         world.getSystem(TagManager.class).register("player", player);
 
         cPosition playerPos = positionComponentMapper.create(player);
-        cTexture playerTexture = textureComponentMapper.create(player);
+        cTextureRegion playerTexture = textureRegionComponentMapper.create(player);
         cSize playerSize = sizeComponentMapper.create(player);
         cTimeSave timeSave = timeSaveComponentMapper.create(player);
         cVelocity playerVel = velocityComponentMapper.create(player);
@@ -144,12 +150,14 @@ public class GamePlayScreen implements Screen {
         playerControllerComponentMapper.create(player);
         aabbComponentMapper.create(player);
         groundColliderComponentMapper.create(player);
+        playerAnimationComponentMapper.create(player);
+
         playerPos.x = 0;
         playerPos.y = Gdx.graphics.getHeight() / 2 + 32;
         playerPos.z = 6;
-        playerTexture.texture = assetManager.get("player.png", Texture.class);
-        playerSize.width = playerTexture.texture.getWidth();
-        playerSize.height = playerTexture.texture.getHeight();
+        playerTexture.textureRegion = new TextureRegion(assetManager.get("player.png", Texture.class));
+        playerSize.width = 32;
+        playerSize.height = 64;
 
         timeSave.init(240, playerPos, playerVel);
 
@@ -237,9 +245,8 @@ public class GamePlayScreen implements Screen {
 
     @Override
     public void render(float delta) {
-        Gdx.app.debug("", "" + this.runner.bgMusic.getPosition());
         if (rev && runner.enableMusic) {
-            if (!Gdx.input.isKeyPressed(Input.Keys.Q)){
+            if (!Gdx.input.isKeyPressed(Input.Keys.Q)) {
                 rev = false;
                 this.runner.bgMusicRev.pause();
                 this.runner.bgMusic.setPosition(this.runner.bgMusicRev.getPosition());
