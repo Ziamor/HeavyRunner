@@ -16,7 +16,7 @@ void main() {
 	gl_FragColor = color;
 	if(color.a > 0.0){
 		vec4 noise = vec4(1.0);
-		noise.xyz = rand(vec2(0.0, v_texCoords.y));
-		gl_FragColor = mix(color, noise, 0.25f);
+		noise.xyz = vec3(rand(vec2(0.0, v_texCoords.y)));
+		gl_FragColor = mix(color, noise, 0.25);
 	}
 }
