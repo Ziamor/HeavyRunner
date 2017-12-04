@@ -19,7 +19,7 @@ public class Runner extends Game {
 
     public Music bgMusic, bgMusicRev;
 
-    public boolean enableMusic = false;
+    public boolean enableMusic = true;
 
     @Override
     public void create() {

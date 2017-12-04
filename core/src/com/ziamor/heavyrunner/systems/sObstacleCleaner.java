@@ -15,7 +15,7 @@ public class sObstacleCleaner extends IteratingSystem {
     @Override
     protected void process(int entityId) {
         cPosition position = positionComponentMapper.get(entityId);
-        if (position.x < -2000)
+        if (position.x < -4000)
             world.delete(entityId);
     }
 }

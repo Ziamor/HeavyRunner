@@ -39,7 +39,6 @@ public class sObstacleController extends IteratingSystem {
         else
             dir = 1f;
         speedMul = rewindTime.curDeSync + 1.0f;
-        Gdx.app.debug("", "Speed: " + speed * speedMul + "Mul: " + speedMul);
     }
 
     @Override
