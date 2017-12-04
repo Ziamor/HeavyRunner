@@ -1,10 +1,8 @@
 package com.ziamor.heavyrunner.systems;
 
 import com.artemis.Aspect;
-import com.artemis.Component;
 import com.artemis.ComponentMapper;
 import com.artemis.systems.IteratingSystem;
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
 import com.ziamor.heavyrunner.components.*;
@@ -20,6 +18,7 @@ public class sPlayerController extends IteratingSystem implements InputProcessor
 
     Action curAction;
 
+    ComponentMapper<cAcceleration> accelerationComponentMapper;
     ComponentMapper<cVelocity> velocityComponentMapper;
     ComponentMapper<cOnGround> onGroundComponentMapper;
     ComponentMapper<cStartRewind> startRewindComponentMapper;
@@ -34,6 +33,7 @@ public class sPlayerController extends IteratingSystem implements InputProcessor
 
     @Override
     protected void process(int entityId) {
+        cAcceleration acceleration = accelerationComponentMapper.get(entityId);
         cVelocity velocity = velocityComponentMapper.get(entityId);
         cOnGround onGround = onGroundComponentMapper.get(entityId);
         cStartRewind startRewind = startRewindComponentMapper.get(entityId);
@@ -48,18 +48,18 @@ public class sPlayerController extends IteratingSystem implements InputProcessor
                 break;
             case RIGHT:
                 if (startRewind == null)
-                    velocity.x = 500;
+                    acceleration.x = 500;
                 break;
             case LEFT:
                 if (startRewind == null)
-                    velocity.x = -500;
+                    acceleration.x = -500;
                 break;
             case STOPREWIND:
                 if (startRewind != null)
                     startRewindComponentMapper.remove(entityId);
                 curAction = Action.NOTHING;
             case NOTHING:
-                velocity.x = 0;
+                acceleration.x = 0;
                 break;
         }
         if (doJump) {

@@ -59,6 +59,7 @@ public class GamePlayScreen implements Screen {
     ComponentMapper<cGroundCollider> groundColliderComponentMapper;
     ComponentMapper<cTimeSave> timeSaveComponentMapper;
     ComponentMapper<cParallaxBG> parallaxBGComponentMapper;
+    ComponentMapper<cAcceleration> accelerationComponentMapper;
 
     public boolean gameover = false;
     public float finalScore = 0;
@@ -126,6 +127,7 @@ public class GamePlayScreen implements Screen {
         groundColliderComponentMapper = world.getMapper(cGroundCollider.class);
         timeSaveComponentMapper = world.getMapper(cTimeSave.class);
         parallaxBGComponentMapper = world.getMapper(cParallaxBG.class);
+        accelerationComponentMapper = world.getMapper(cAcceleration.class);
 
         int player = world.create();
         world.getSystem(TagManager.class).register("player", player);
@@ -136,6 +138,7 @@ public class GamePlayScreen implements Screen {
         cTimeSave timeSave = timeSaveComponentMapper.create(player);
         cVelocity playerVel = velocityComponentMapper.create(player);
 
+        accelerationComponentMapper.create(player);
         playerControllerComponentMapper.create(player);
         aabbComponentMapper.create(player);
         groundColliderComponentMapper.create(player);
@@ -243,7 +246,7 @@ public class GamePlayScreen implements Screen {
             if (gameState == GameState.ACTIVE) {
                 if (Gdx.input.isKeyJustPressed(Input.Keys.SLASH))
                     drawAABB.setEnabled(!drawAABB.isEnabled());
-                Gdx.gl.glClearColor(186f/255f, 230f/255f, 214f/255f, 1);
+                Gdx.gl.glClearColor(186f / 255f, 230f / 255f, 214f / 255f, 1);
                 Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
                 world.setDelta(delta);
                 world.process();

@@ -10,6 +10,8 @@ import com.ziamor.heavyrunner.components.*;
 public class sObstacleController extends IteratingSystem {
     @EntityId
     int player = -1;
+
+    ComponentMapper<cPosition> positionComponentMapper;
     ComponentMapper<cVelocity> velocityComponentMapper;
     ComponentMapper<cStartRewind> startRewindComponentMapper;
     ComponentMapper<cDead> deadComponentMapper;
@@ -38,10 +40,13 @@ public class sObstacleController extends IteratingSystem {
     @Override
     protected void process(int entityId) {
         cDead dead = deadComponentMapper.get(player);
-        if(dead != null)
+        if (dead != null)
             return;
 
+        cPosition position = positionComponentMapper.get(entityId);
         cVelocity velocity = velocityComponentMapper.get(entityId);
         velocity.x = -speed * dir * speedMul;
+
+        position.x += velocity.x * world.getDelta();
     }
 }
