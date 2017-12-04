@@ -22,7 +22,7 @@
     fontDisabled: gray
   },
     com.badlogic.gdx.scenes.scene2d.ui.Skin$TintedDrawable: {
-    buttonUp: { name: base, color: up },
+    buttonUp: { name: base, color: white },
     buttonOver: { name: base, color: over },
     buttonDown: { name: base, color: down },
     buttonDisabled: { name: base, color: disabled },

@@ -11,6 +11,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.utils.Align;
 import com.ziamor.heavyrunner.Runner;
 
 import java.text.DecimalFormat;
@@ -41,6 +42,7 @@ public class GameOverScreen implements Screen {
         df.setMinimumFractionDigits(2);
 
         final Label lblScore = new Label("Time Survived: " + df.format(score) + "s", skin);
+        lblScore.setAlignment(Align.center);
         table.add(lblScore).fillX().uniformX();
         table.row().pad(10, 0, 10, 0);
 
