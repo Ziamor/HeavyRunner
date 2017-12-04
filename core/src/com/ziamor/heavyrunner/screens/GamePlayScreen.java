@@ -63,6 +63,7 @@ public class GamePlayScreen implements Screen {
     ComponentMapper<cAcceleration> accelerationComponentMapper;
     ComponentMapper<cTextureRegion> textureRegionComponentMapper;
     ComponentMapper<cPlayerAnimation> playerAnimationComponentMapper;
+    ComponentMapper<cStaticShader> staticShaderComponentMapper;
 
     public boolean gameover = false;
     public float finalScore = 0;
@@ -136,6 +137,7 @@ public class GamePlayScreen implements Screen {
         accelerationComponentMapper = world.getMapper(cAcceleration.class);
         textureRegionComponentMapper = world.getMapper(cTextureRegion.class);
         playerAnimationComponentMapper = world.getMapper(cPlayerAnimation.class);
+        staticShaderComponentMapper = world.getMapper(cStaticShader.class);
 
         int player = world.create();
         world.getSystem(TagManager.class).register("player", player);
@@ -146,6 +148,7 @@ public class GamePlayScreen implements Screen {
         cTimeSave timeSave = timeSaveComponentMapper.create(player);
         cVelocity playerVel = velocityComponentMapper.create(player);
 
+        //staticShaderComponentMapper.create(player);
         accelerationComponentMapper.create(player);
         playerControllerComponentMapper.create(player);
         aabbComponentMapper.create(player);

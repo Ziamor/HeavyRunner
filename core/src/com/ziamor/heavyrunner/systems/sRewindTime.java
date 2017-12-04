@@ -23,8 +23,10 @@ public class sRewindTime extends BaseEntitySystem {
     ComponentMapper<cVelocity> velocityComponentMapper;
     ComponentMapper<cDead> deadComponentMapper;
     ComponentMapper<cPlayerAnimation> playerAnimationComponentMapper;
+    ComponentMapper<cStaticShader> staticShaderComponentMapper;
 
     ProgressBar timeProgressBar, timeDeSyncProgressBar;
+
     Label lblScore;
 
     float deSyncRate = 1f / 2f;
@@ -64,6 +66,7 @@ public class sRewindTime extends BaseEntitySystem {
         cPosition position = positionComponentMapper.get(player);
         cVelocity velocity = velocityComponentMapper.get(player);
         cPlayerAnimation playerAnimation = playerAnimationComponentMapper.get(player);
+        cStaticShader cStaticShader = staticShaderComponentMapper.get(player);
 
         if (timeSave != null) {
             if (startRewind != null) {
@@ -71,6 +74,8 @@ public class sRewindTime extends BaseEntitySystem {
                 if (startRewind.numFrames <= 0)
                     stopRewind();
                 else {
+                    if (cStaticShader == null)
+                        staticShaderComponentMapper.create(player);
                     TimeSavePoint savePoint = timeSave.rewind();
                     if (savePoint == null) {
                         stopRewind();
@@ -109,5 +114,6 @@ public class sRewindTime extends BaseEntitySystem {
     protected void stopRewind() {
         startRewindComponentMapper.remove(player);
         obstacleController.speedMul = 1f + curDeSync;
+        staticShaderComponentMapper.remove(player);
     }
 }
