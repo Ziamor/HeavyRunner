@@ -2,9 +2,11 @@ package com.ziamor.heavyrunner.systems;
 
 import com.artemis.Aspect;
 import com.artemis.ComponentMapper;
+import com.artemis.annotations.Wire;
 import com.artemis.systems.IteratingSystem;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
+import com.ziamor.heavyrunner.Runner;
 import com.ziamor.heavyrunner.components.*;
 
 public class sPlayerController extends IteratingSystem implements InputProcessor {
@@ -17,6 +19,9 @@ public class sPlayerController extends IteratingSystem implements InputProcessor
     }
 
     Action curAction;
+
+    @Wire
+    Runner runner;
 
     ComponentMapper<cAcceleration> accelerationComponentMapper;
     ComponentMapper<cVelocity> velocityComponentMapper;
@@ -63,8 +68,10 @@ public class sPlayerController extends IteratingSystem implements InputProcessor
                 break;
         }
         if (doJump) {
-            if (onGround != null)
+            if (onGround != null) {
                 velocity.y += 500;
+                runner.jumpSound.play(0.75f);
+            }
             doJump = false;
         }
     }

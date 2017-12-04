@@ -114,7 +114,8 @@ public class GamePlayScreen implements Screen {
                 .build()
                 .register(batch)
                 .register(shape)
-                .register(assetManager);
+                .register(assetManager)
+                .register(runner);
 
         world = new World(config);
 

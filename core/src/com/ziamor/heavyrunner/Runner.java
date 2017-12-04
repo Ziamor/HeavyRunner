@@ -5,6 +5,7 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
@@ -18,6 +19,7 @@ public class Runner extends Game {
     public AssetManager assetManager;
 
     public Music bgMusic, bgMusicRev;
+    public Sound jumpSound;
 
     public boolean enableMusic = true;
 
@@ -47,6 +49,7 @@ public class Runner extends Game {
         assetManager.load("closeTrees_BG.png", Texture.class);
         assetManager.load("Ludum_Music.mp3", Music.class);
         assetManager.load("Ludum_MusicReverse.mp3", Music.class);
+        assetManager.load("Jump.wav", Sound.class);
 
         assetManager.finishLoading();
 
@@ -63,6 +66,7 @@ public class Runner extends Game {
         if (enableMusic)
             bgMusic.play();
 
+        jumpSound = assetManager.get("Jump.wav", Sound.class);
         this.setScreen(new MainMenuScreen(this));
     }
 
