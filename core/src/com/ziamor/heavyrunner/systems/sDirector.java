@@ -35,7 +35,7 @@ public class sDirector extends BaseEntitySystem {
 
     int minPlatformLength = 3;
     int maxPlatformLenth = 7;
-    float wallSize = 32;
+    float wallSize = 16;
     float wallDepth = 5;
     boolean rewinding;
 

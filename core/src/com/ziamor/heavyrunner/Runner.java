@@ -25,10 +25,13 @@ public class Runner extends Game {
         assetManager.load("skin.json", Skin.class);
         assetManager.load("player.png", Texture.class);
         assetManager.load("wall.png", Texture.class);
-        assetManager.load("clouds1.png", Texture.class);
-        assetManager.load("clouds2.png", Texture.class);
-        assetManager.load("grass.png", Texture.class);
-        assetManager.load("mountains.png", Texture.class);
+        //assetManager.load("clouds1.png", Texture.class);
+        //assetManager.load("clouds2.png", Texture.class);
+        //assetManager.load("grass.png", Texture.class);
+        //assetManager.load("mountains.png", Texture.class);
+        assetManager.load("farTrees_BG.png", Texture.class);
+        assetManager.load("closeTrees_BG.png", Texture.class);
+
         assetManager.finishLoading();
         this.setScreen(new MainMenuScreen(this));
     }

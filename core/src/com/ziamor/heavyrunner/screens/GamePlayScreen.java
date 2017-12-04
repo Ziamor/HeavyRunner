@@ -140,7 +140,7 @@ public class GamePlayScreen implements Screen {
         aabbComponentMapper.create(player);
         groundColliderComponentMapper.create(player);
         playerPos.x = 0;
-        playerPos.y = Gdx.graphics.getHeight() / 2 + 32;
+        playerPos.y = Gdx.graphics.getHeight() / 2 + 16;
         playerPos.z = 6;
         playerTexture.texture = assetManager.get("player.png", Texture.class);
         playerSize.width = playerTexture.texture.getWidth();
@@ -149,32 +149,22 @@ public class GamePlayScreen implements Screen {
         timeSave.init(240, playerPos, playerVel);
 
         createParallax(0);
-        createParallax(assetManager.get("clouds1.png", Texture.class).getWidth());
-        createParallax(assetManager.get("clouds1.png", Texture.class).getWidth() * -1f);
+        createParallax(assetManager.get("farTrees_BG.png", Texture.class).getWidth());
+        createParallax(assetManager.get("farTrees_BG.png", Texture.class).getWidth() * -1f);
 
         gameState = GameState.ACTIVE;
     }
 
     private void createParallax(float offset) {
-        int clouds1 = world.create();
-        positionComponentMapper.create(clouds1).set(offset, 0, 0);
-        textureComponentMapper.create(clouds1).texture = assetManager.get("clouds1.png", Texture.class);
-        parallaxBGComponentMapper.create(clouds1).scrollFactor = 0.2f;
-
         int mountains = world.create();
         positionComponentMapper.create(mountains).set(offset, 0, 1);
-        textureComponentMapper.create(mountains).texture = assetManager.get("mountains.png", Texture.class);
+        textureComponentMapper.create(mountains).texture = assetManager.get("farTrees_BG.png", Texture.class);
         parallaxBGComponentMapper.create(mountains).scrollFactor = 0.4f;
 
         int clouds2 = world.create();
         positionComponentMapper.create(clouds2).set(offset, 0, 2);
-        textureComponentMapper.create(clouds2).texture = assetManager.get("clouds2.png", Texture.class);
+        textureComponentMapper.create(clouds2).texture = assetManager.get("closeTrees_BG.png", Texture.class);
         parallaxBGComponentMapper.create(clouds2).scrollFactor = 0.6f;
-
-        int grass = world.create();
-        positionComponentMapper.create(grass).set(offset, 0, 3);
-        textureComponentMapper.create(grass).texture = assetManager.get("grass.png", Texture.class);
-        parallaxBGComponentMapper.create(grass).scrollFactor = 0.7f;
     }
 
     protected void createUI() {
@@ -253,7 +243,7 @@ public class GamePlayScreen implements Screen {
             if (gameState == GameState.ACTIVE) {
                 if (Gdx.input.isKeyJustPressed(Input.Keys.SLASH))
                     drawAABB.setEnabled(!drawAABB.isEnabled());
-                Gdx.gl.glClearColor(0, 0, 0, 1);
+                Gdx.gl.glClearColor(186f/255f, 230f/255f, 214f/255f, 1);
                 Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
                 world.setDelta(delta);
                 world.process();
