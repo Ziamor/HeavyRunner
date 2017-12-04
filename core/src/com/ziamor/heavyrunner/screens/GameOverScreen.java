@@ -28,7 +28,7 @@ public class GameOverScreen implements Screen {
         this.runner = runner;
         this.assetManager = runner.assetManager;
 
-        skin = assetManager.get("skin.json", Skin.class);
+        skin = assetManager.get("trSkin.json", Skin.class);
         stage = new Stage();
         Gdx.input.setInputProcessor(stage);
 
@@ -76,6 +76,7 @@ public class GameOverScreen implements Screen {
 
     @Override
     public void render(float delta) {
+        Gdx.gl.glClearColor(48f/255f, 36f/255f, 66f/255f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         stage.act(delta);
         stage.draw();

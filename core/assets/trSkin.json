@@ -1,0 +1,43 @@
+{
+  com.badlogic.gdx.graphics.g2d.BitmapFont: { 
+    default: { file: arial-15.fnt }
+  },
+  com.badlogic.gdx.graphics.Color: {
+	white: { r: 1, g: 1, b: 1, a: 1 },
+    gray: { r: 0.5, g: 0.5, b: 0.5, a: 1 },
+    black: { r: 0, g: 0, b: 0, a: 1 },
+	
+    up: { r: 0.6, g: 0.6, b: 0.6, a: 1 },
+    over: { r: 0.5, g: 0.5, b: 0.5, a: 1 },
+    down: { r: 0, g: 0.3, b: 0.3, a: 1 },
+    checked: { r: 0, g: 0.3, b: 0.5, a: 1 },
+    checkedOver: { r: 0, g: 0.4, b: 0.6, a: 1 },
+    disabled: { r: 0.1, g: 0.1, b: 0.1, a: 1 },
+    
+    font: black
+    fontOver: white
+    fontDown: gray
+    fontChecked: checkedOver
+    fontCheckedOver: checked
+    fontDisabled: gray
+  },
+    com.badlogic.gdx.scenes.scene2d.ui.Skin$TintedDrawable: {
+    buttonUp: { name: base, color: up },
+    buttonOver: { name: base, color: over },
+    buttonDown: { name: base, color: down },
+    buttonDisabled: { name: base, color: disabled },
+    buttonChecked: { name: base, color: checked },
+    buttonCheckedOver: { name: base, color: checkedOver }
+  },
+  com.badlogic.gdx.scenes.scene2d.ui.Button$ButtonStyle: {
+    default: { up: buttonUp, over: buttonOver, down: buttonDown, disabled: buttonDisabled },
+    toggle: { up: buttonUp, over: buttonOver, down: buttonDown, checked: buttonChecked, checkedOver: buttonCheckedOver, disabled: buttonDisabled }
+  },
+   com.badlogic.gdx.scenes.scene2d.ui.TextButton$TextButtonStyle: {
+    default: { up: buttonUp, over: buttonOver, down: buttonDown, disabled: buttonDisabled, font: default, fontColor: font,
+      overFontColor: fontOver, downFontColor: fontDown, disabledFontColor: fontDisabled, pressedOffsetY: -1, pressedOffsetX: 1 }
+  },
+	com.badlogic.gdx.scenes.scene2d.ui.Label$LabelStyle: {
+    default: { font: default, fontColor: font }
+  }
+}

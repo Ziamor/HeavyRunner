@@ -140,7 +140,7 @@ public class GamePlayScreen implements Screen {
         aabbComponentMapper.create(player);
         groundColliderComponentMapper.create(player);
         playerPos.x = 0;
-        playerPos.y = Gdx.graphics.getHeight() / 2 + 16;
+        playerPos.y = Gdx.graphics.getHeight() / 2 + 32;
         playerPos.z = 6;
         playerTexture.texture = assetManager.get("player.png", Texture.class);
         playerSize.width = playerTexture.texture.getWidth();

@@ -29,13 +29,12 @@ public class sDirector extends BaseEntitySystem {
     ComponentMapper<cWall> wallComponentMapper;
     ComponentMapper<cStartRewind> startRewindComponentMapper;
 
-    Texture wallTexture;
-
+    Texture[] middle, left, right;
     float xScreenEnd;
 
     int minPlatformLength = 3;
     int maxPlatformLenth = 7;
-    float wallSize = 16;
+    float wallSize = 32;
     float wallDepth = 5;
     boolean rewinding;
 
@@ -64,18 +63,29 @@ public class sDirector extends BaseEntitySystem {
         } else {
             rewinding = false;
         }
-
-        if (wallTexture == null)
-            wallTexture = assetManager.get("wall.png", Texture.class);
         xScreenEnd = Gdx.graphics.getWidth();
     }
 
     public void init() {
         doneSetup = true;
+
+        left = new Texture[]{assetManager.get("pl1.png", Texture.class),assetManager.get("pl2.png", Texture.class)};
+        right = new Texture[]{assetManager.get("pr1.png", Texture.class),assetManager.get("pr2.png", Texture.class)};
+        middle = new Texture[]{assetManager.get("pm1.png", Texture.class), assetManager.get("pm2.png", Texture.class), assetManager.get("pm3.png", Texture.class), assetManager.get("pm4.png", Texture.class)};
         float y = Gdx.graphics.getHeight() / 2;
         int num = (int) ((Gdx.graphics.getWidth() - min_x_Gap) / wallSize);
-        for (int i = 0; i < num; i++)
-            spawnPlatform(i * wallSize, y);
+        for (int i = 0; i < num; i++) {
+            Texture[] textures = {};
+            if (i == 0)
+                textures = left;
+            else if (i == num - 1)
+                textures = right;
+            else {
+                textures = middle;
+            }
+            int r = MathUtils.random(textures.length-1);
+            spawnPlatform(i * wallSize, y, textures[r]);
+        }
         lastPlatform = createCollisionEntity(0, y, num);
     }
 
@@ -107,12 +117,22 @@ public class sDirector extends BaseEntitySystem {
         else
             y = MathUtils.random(Math.max(0, lastWallAABB.aabb.y - max_y_gap), Math.min(lastWallAABB.aabb.y + max_y_gap, Gdx.graphics.getHeight() - wallSize * 4));
         int num = MathUtils.random(minPlatformLength, maxPlatformLenth);
-        for (int i = 0; i < num; i++)
-            spawnPlatform(xScreenEnd + i * wallSize, y);
+        for (int i = 0; i < num; i++) {
+            Texture[] textures = {};
+            if (i == 0)
+                textures = left;
+            else if (i == num - 1)
+                textures = right;
+            else {
+                textures = middle;
+            }
+            int r = MathUtils.random(textures.length-1);
+            spawnPlatform(xScreenEnd + i * wallSize, y, textures[r]);
+        }
         lastPlatform = createCollisionEntity(xScreenEnd, y, num);
     }
 
-    protected void spawnPlatform(float x, float y) {
+    protected void spawnPlatform(float x, float y, Texture texture) {
         int wall = world.create();
 
         cPosition wallPos = positionComponentMapper.create(wall);
@@ -127,7 +147,7 @@ public class sDirector extends BaseEntitySystem {
         wallPos.x = x;
         wallPos.y = y;
         wallPos.z = wallDepth;
-        tex.texture = wallTexture;
+        tex.texture = texture;
         size.width = tex.texture.getWidth();
         size.height = tex.texture.getHeight();
     }

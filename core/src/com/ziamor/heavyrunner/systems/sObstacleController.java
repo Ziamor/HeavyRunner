@@ -14,7 +14,7 @@ public class sObstacleController extends IteratingSystem {
     ComponentMapper<cStartRewind> startRewindComponentMapper;
     ComponentMapper<cDead> deadComponentMapper;
 
-    float speed = 500;
+    float speed = 250;
     float dir = 1f;
 
     float speedMul = 1f;
