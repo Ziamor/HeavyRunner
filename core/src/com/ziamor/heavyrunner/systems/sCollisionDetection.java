@@ -3,9 +3,11 @@ package com.ziamor.heavyrunner.systems;
 import com.artemis.Aspect;
 import com.artemis.BaseEntitySystem;
 import com.artemis.ComponentMapper;
+import com.artemis.annotations.Wire;
 import com.artemis.managers.TagManager;
 import com.artemis.utils.IntBag;
 import com.badlogic.gdx.math.Rectangle;
+import com.ziamor.heavyrunner.Runner;
 import com.ziamor.heavyrunner.components.*;
 
 public class sCollisionDetection extends BaseEntitySystem {
@@ -21,13 +23,16 @@ public class sCollisionDetection extends BaseEntitySystem {
         super(Aspect.all());
     }
 
+    @Wire
+    Runner runner;
+
     @Override
     protected void processSystem() {
         int player = world.getSystem(TagManager.class).getEntityId("player");
 
         cStartRewind startRewind = startRewindComponentMapper.get(player);
 
-        if(startRewind != null){
+        if (startRewind != null) {
             // Time is being rewinded, do not check of collisions
             return;
         }
@@ -35,6 +40,12 @@ public class sCollisionDetection extends BaseEntitySystem {
         cGroundCollider playerGroundCollider = groundColliderComponentMapper.get(player);
         cPosition playerPos = positionComponentMapper.get(player);
         cVelocity playerVel = velocityComponentMapper.get(player);
+        cOnGround onGround = onGroundComponentMapper.get(player);
+
+        boolean wasOnGround = false;
+
+        if (onGround != null)
+            wasOnGround = true;
 
         IntBag walls = world.getAspectSubscriptionManager().get(Aspect.all(cWall.class, cAABB.class)).getEntities();
         //Check if player is on the ground
@@ -48,6 +59,8 @@ public class sCollisionDetection extends BaseEntitySystem {
                     Rectangle intersection = getIntersection(playerGroundCollider.aabb, wallAABB.aabb);
                     if (playerAABB.aabb.y > wallAABB.aabb.y) {
                         onGroundComponentMapper.create(player);
+                        if (!wasOnGround)
+                            runner.hitSound.play(0.75f);
                         break;
                     }
                 }

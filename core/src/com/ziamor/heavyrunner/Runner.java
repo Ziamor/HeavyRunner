@@ -10,7 +10,6 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.ziamor.heavyrunner.screens.GamePlayScreen;
 import com.ziamor.heavyrunner.screens.MainMenuScreen;
 
 public class Runner extends Game {
@@ -19,7 +18,7 @@ public class Runner extends Game {
     public AssetManager assetManager;
 
     public Music bgMusic, bgMusicRev;
-    public Sound jumpSound;
+    public Sound jumpSound, deadSound, hitSound, selectSound;
 
     public boolean enableMusic = true;
 
@@ -50,6 +49,9 @@ public class Runner extends Game {
         assetManager.load("Ludum_Music.mp3", Music.class);
         assetManager.load("Ludum_MusicReverse.mp3", Music.class);
         assetManager.load("Jump.wav", Sound.class);
+        assetManager.load("Dead.wav", Sound.class);
+        assetManager.load("Blip_Select.wav", Sound.class);
+        assetManager.load("Hit.wav", Sound.class);
 
         assetManager.finishLoading();
 
@@ -67,6 +69,10 @@ public class Runner extends Game {
             bgMusic.play();
 
         jumpSound = assetManager.get("Jump.wav", Sound.class);
+        deadSound = assetManager.get("Dead.wav", Sound.class);
+        hitSound = assetManager.get("Hit.wav", Sound.class);
+        selectSound = assetManager.get("Blip_Select.wav", Sound.class);
+
         this.setScreen(new MainMenuScreen(this));
     }
 
