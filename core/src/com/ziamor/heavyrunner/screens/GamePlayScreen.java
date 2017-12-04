@@ -238,14 +238,14 @@ public class GamePlayScreen implements Screen {
     @Override
     public void render(float delta) {
         Gdx.app.debug("", "" + this.runner.bgMusic.getPosition());
-        if (rev) {
+        if (rev && runner.enableMusic) {
             if (!Gdx.input.isKeyPressed(Input.Keys.Q)){
                 rev = false;
                 this.runner.bgMusicRev.pause();
                 this.runner.bgMusic.setPosition(this.runner.bgMusicRev.getPosition());
                 this.runner.bgMusic.play();
             }
-        } else if (Gdx.input.isKeyPressed(Input.Keys.Q)) {
+        } else if (runner.enableMusic && Gdx.input.isKeyPressed(Input.Keys.Q)) {
             rev = true;
             this.runner.bgMusic.pause();
             this.runner.bgMusicRev.setPosition(this.runner.bgMusic.getPosition());

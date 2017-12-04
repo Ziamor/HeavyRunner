@@ -17,7 +17,9 @@ public class Runner extends Game {
     public ShapeRenderer shape;
     public AssetManager assetManager;
 
-    public Music bgMusic,bgMusicRev;
+    public Music bgMusic, bgMusicRev;
+
+    public boolean enableMusic = true;
 
     @Override
     public void create() {
@@ -48,14 +50,17 @@ public class Runner extends Game {
         assetManager.finishLoading();
 
         bgMusic = assetManager.get("Ludum_Music.mp3", Music.class);
-        bgMusicRev= assetManager.get("Ludum_MusicReverse.mp3", Music.class);
+        bgMusicRev = assetManager.get("Ludum_MusicReverse.mp3", Music.class);
 
         bgMusicRev.setVolume(0.25f);
         bgMusicRev.setLooping(true);
 
-        bgMusic.play();
         bgMusic.setVolume(0.25f);
         bgMusic.setLooping(true);
+
+
+        if (enableMusic)
+            bgMusic.play();
 
         this.setScreen(new MainMenuScreen(this));
     }
