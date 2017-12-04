@@ -38,8 +38,8 @@ public class sDirector extends BaseEntitySystem {
     float wallDepth = 5;
     boolean rewinding;
 
-    float min_x_Gap = wallSize * 2;
-    float max_x_Gap = wallSize * 8;
+    float min_x_Gap = wallSize * 8;
+    float max_x_Gap = wallSize * 15;
 
     float max_y_gap = wallSize * 4;
     @EntityId

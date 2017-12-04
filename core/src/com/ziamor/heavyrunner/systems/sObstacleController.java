@@ -17,6 +17,7 @@ public class sObstacleController extends IteratingSystem {
     ComponentMapper<cStartRewind> startRewindComponentMapper;
     ComponentMapper<cDead> deadComponentMapper;
 
+    float playerModifier = 0;
     float speed = 250;
     float dir = 1f;
 
@@ -51,6 +52,6 @@ public class sObstacleController extends IteratingSystem {
         cVelocity velocity = velocityComponentMapper.get(entityId);
         velocity.x = -speed * dir * speedMul;
 
-        position.x += velocity.x * world.getDelta();
+        position.x += (velocity.x - playerModifier) * world.getDelta();
     }
 }
