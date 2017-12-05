@@ -170,6 +170,9 @@ public class GamePlayScreen implements Screen {
         createParallax(assetManager.get("farTrees_BG.png", Texture.class).getWidth());
         createParallax(assetManager.get("farTrees_BG.png", Texture.class).getWidth() * -1f);
 
+        this.runner.bgMusicRev.pause();
+        if(!this.runner.bgMusic.isPlaying())
+            this.runner.bgMusic.play();
         gameState = GameState.ACTIVE;
     }
 
