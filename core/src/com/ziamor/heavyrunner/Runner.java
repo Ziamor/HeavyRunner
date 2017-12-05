@@ -40,6 +40,8 @@ public class Runner extends Game {
         assetManager.load("pm2.png", Texture.class);
         assetManager.load("pm3.png", Texture.class);
         assetManager.load("pm4.png", Texture.class);
+        assetManager.load("Title_back.png", Texture.class);
+        assetManager.load("Title_front.png", Texture.class);
         //assetManager.load("clouds1.png", Texture.class);
         //assetManager.load("clouds2.png", Texture.class);
         //assetManager.load("grass.png", Texture.class);

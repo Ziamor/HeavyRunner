@@ -196,6 +196,7 @@ public class GamePlayScreen implements Screen {
         uiStage.addActor(uiTable);
 
         timeProgressBar = new ProgressBar(0, 1f, 0.01f, false, skin);
+
         uiTable.add(new Label("Time Bank:", skin));
         uiTable.add(timeProgressBar);
 

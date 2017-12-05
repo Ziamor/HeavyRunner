@@ -77,7 +77,7 @@ public class GameOverScreen implements Screen {
             }
         });
 
-        table.add(btnExit).fillX().uniformX();
+        table.add(btnExit).width(250).fillX().uniformX();
     }
 
     @Override
