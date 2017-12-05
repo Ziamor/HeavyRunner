@@ -58,6 +58,23 @@ public class MainMenuScreen implements Screen {
 
         table.add(btnStart).width(250).fillX().uniformX();
         table.row().pad(10, 0, 10, 0);
+
+        final TextButton btnControls = new TextButton("Controls", skin, "default");
+
+        btnControls.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                runner.selectSound.play(0.75f);
+                if (runner.batch.isDrawing())
+                    runner.batch.end();
+                runner.setScreen(new ControlScreen(runner));
+                dispose();
+            }
+        });
+
+        table.add(btnControls).width(250).fillX().uniformX();
+        table.row().pad(10, 0, 10, 0);
+
         final TextButton btnExit = new TextButton("Exit", skin, "default");
 
         btnExit.addListener(new ClickListener() {
