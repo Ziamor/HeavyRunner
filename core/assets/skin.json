@@ -17,7 +17,7 @@
     selection: { r: 0, g: 0.3, b: 0.5, a: 1 },
     semiTransparent: { r: 0, g: 0, b: 0, a: 0.6 },
     
-    font: down
+    font: black
     fontOver: down
     fontDown: gray
     fontChecked: checkedOver

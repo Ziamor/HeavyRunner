@@ -157,7 +157,7 @@ public class GamePlayScreen implements Screen {
         groundColliderComponentMapper.create(player);
         playerAnimationComponentMapper.create(player);
 
-        playerPos.x = 0;
+        playerPos.x = 16*4;
         playerPos.y = Gdx.graphics.getHeight() / 2 + 32;
         playerPos.z = 6;
         playerTexture.textureRegion = new TextureRegion(assetManager.get("player.png", Texture.class));
