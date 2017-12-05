@@ -90,7 +90,6 @@ public class MainMenuScreen implements Screen {
 
         runner.batch.draw(back, x, y, front.getWidth() * scale, front.getHeight() * scale);
         runner.batch.draw(front, x + Math.abs(front.getWidth()* scale - front.getWidth() * size* scale) / 2, y + Math.abs(front.getHeight()* scale - front.getHeight() * size* scale) / 2, front.getWidth() * size * scale, front.getHeight() * size * scale);
-        Gdx.app.log("", "" + size);
         runner.batch.end();
         stage.act(delta);
         stage.draw();
