@@ -30,17 +30,17 @@ public class sRender extends SortedIteratingSystem {
     public sRender() {
         super(Aspect.all(cPosition.class).one(cTextureRegion.class, cTexture.class));
 
-        String name = "static";
+        /*(String name = "static";
         String vertexShader = Gdx.files.internal("shaders\\" + name + "\\vertex.glsl").readString();
         String fragmentShader = Gdx.files.internal("shaders\\" + name + "\\fragment.glsl").readString();
         staticShader = new ShaderProgram(vertexShader, fragmentShader);
 
         if (staticShader.getLog().length() != 0)
-            Gdx.app.debug("Shader Resolver System", staticShader.getLog());
+           Gdx.app.debug("Shader Resolver System", staticShader.getLog());
 
         mesh = new com.badlogic.gdx.graphics.Mesh(true, 6, 0,
                 new VertexAttribute(VertexAttributes.Usage.Position, 3, ShaderProgram.POSITION_ATTRIBUTE),
-                new VertexAttribute(VertexAttributes.Usage.TextureCoordinates, 2, ShaderProgram.TEXCOORD_ATTRIBUTE + "0"));
+                new VertexAttribute(VertexAttributes.Usage.TextureCoordinates, 2, ShaderProgram.TEXCOORD_ATTRIBUTE + "0"));*/
     }
 
     @Override
@@ -55,9 +55,9 @@ public class sRender extends SortedIteratingSystem {
         else if (textureRegion != null)
             batch.draw(textureRegion.textureRegion, pos.x, pos.y);
 
-        if (cStaticShader != null && textureRegion != null) {
+        /*if (cStaticShader != null && textureRegion != null) {
             cStartRewind startRewind = startRewindComponentMapper.get(entityId);
-            if(startRewind == null){
+            if (startRewind == null) {
                 staticShaderComponentMapper.remove(entityId);
                 return;
             }
@@ -75,7 +75,7 @@ public class sRender extends SortedIteratingSystem {
             staticShader.end();
 
             batch.begin();
-        }
+        }*/
     }
 
     @Override

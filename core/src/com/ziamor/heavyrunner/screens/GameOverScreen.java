@@ -38,9 +38,9 @@ public class GameOverScreen implements Screen {
         table.setFillParent(true);
         stage.addActor(table);
 
-        DecimalFormat df = new DecimalFormat();
-        df.setMaximumFractionDigits(2);
-        df.setMinimumFractionDigits(2);
+        //DecimalFormat df = new DecimalFormat();
+        //df.setMaximumFractionDigits(2);
+       // df.setMinimumFractionDigits(2);
 
         final Label lblTip = new Label("Remember that you can press Q to rewind time. Keep in mind though that \nit will increase your deSync causing the world to move much faster.", skin);
         lblTip.setWidth(100);
@@ -48,7 +48,8 @@ public class GameOverScreen implements Screen {
         table.add(lblTip).fillX().uniformX();
         table.row().pad(50, 0, 50, 0);
 
-        final Label lblScore = new Label("Time Survived: " + df.format(score) + "s", skin);
+        //final Label lblScore = new Label("Time Survived: " + df.format(score) + "s", skin);
+        final Label lblScore = new Label("Time Survived: " + score + "s", skin);
         lblScore.setAlignment(Align.center);
         table.add(lblScore).fillX().uniformX();
         table.row().pad(10, 0, 10, 0);

@@ -34,16 +34,16 @@ public class sRewindTime extends BaseEntitySystem {
     public float curDeSync = 0f;
 
     public float timeSurvived = 0;
-    DecimalFormat df;
+    //DecimalFormat df;
 
     public sRewindTime(ProgressBar timeProgressBar, ProgressBar timeDeSyncProgressBar, Label lblScore) {
         super(Aspect.all());
         this.timeProgressBar = timeProgressBar;
         this.timeDeSyncProgressBar = timeDeSyncProgressBar;
         this.lblScore = lblScore;
-        df = new DecimalFormat();
-        df.setMaximumFractionDigits(2);
-        df.setMinimumFractionDigits(2);
+        //df = new DecimalFormat();
+        //df.setMaximumFractionDigits(2);
+        //df.setMinimumFractionDigits(2);
     }
 
     @Override
@@ -106,7 +106,8 @@ public class sRewindTime extends BaseEntitySystem {
         }
 
         if (lblScore != null)
-            lblScore.setText("Score: " + df.format(timeSurvived));
+            lblScore.setText("Score: " + timeSurvived);
+        //lblScore.setText("Score: " + df.format(timeSurvived));
     }
 
     protected void stopRewind() {

@@ -80,7 +80,7 @@ public class MainMenuScreen implements Screen {
         btnExit.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                runner.selectSound.play(0.25f);
+                runner.selectSound.play(0.75f);
                 Gdx.app.exit();
                 dispose();
             }
