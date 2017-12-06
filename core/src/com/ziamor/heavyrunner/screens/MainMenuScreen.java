@@ -56,7 +56,7 @@ public class MainMenuScreen implements Screen {
             }
         });
 
-        table.add(btnStart).width(250).fillX().uniformX();
+        table.add(btnStart).fillX().uniformX();
         table.row().pad(10, 0, 10, 0);
 
         final TextButton btnControls = new TextButton("Controls", skin, "default");
@@ -72,7 +72,7 @@ public class MainMenuScreen implements Screen {
             }
         });
 
-        table.add(btnControls).width(250).fillX().uniformX();
+        table.add(btnControls).fillX().uniformX();
         table.row().pad(10, 0, 10, 0);
 
         final TextButton btnExit = new TextButton("Exit", skin, "default");
@@ -86,7 +86,7 @@ public class MainMenuScreen implements Screen {
             }
         });
 
-        table.add(btnExit).fillX().uniformX();
+        table.add(btnExit).width(150).fillX().uniformX();
     }
 
     @Override

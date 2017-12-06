@@ -64,7 +64,7 @@ public class GameOverScreen implements Screen {
             }
         });
 
-        table.add(btnStart).width(250).fillX().uniformX();
+        table.add(btnStart).width(150).fillX().uniformX();
         table.row().pad(10, 0, 10, 0);
         final TextButton btnExit = new TextButton("Exit", skin, "default");
 
@@ -77,7 +77,7 @@ public class GameOverScreen implements Screen {
             }
         });
 
-        table.add(btnExit).width(250).fillX().uniformX();
+        table.add(btnExit).width(150).fillX().uniformX();
     }
 
     @Override

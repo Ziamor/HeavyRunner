@@ -54,7 +54,7 @@ public class ControlScreen implements Screen {
             }
         });
 
-        table.add(btnStart).width(250).fillX().uniformX();
+        table.add(btnStart).width(150).fillX().uniformX();
     }
 
     @Override

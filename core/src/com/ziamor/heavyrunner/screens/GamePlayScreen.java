@@ -232,7 +232,7 @@ public class GamePlayScreen implements Screen {
             }
         });
 
-        pauseTable.add(btnStart).width(250).fillX().uniformX();
+        pauseTable.add(btnStart).fillX().uniformX();
         pauseTable.row().pad(10, 0, 10, 0);
 
         final TextButton btnMainMenu = new TextButton("Main Menu", btnSkin, "default");
@@ -246,7 +246,7 @@ public class GamePlayScreen implements Screen {
             }
         });
 
-        pauseTable.add(btnMainMenu).width(250).fillX().uniformX();
+        pauseTable.add(btnMainMenu).width(150).fillX().uniformX();
     }
 
     @Override
